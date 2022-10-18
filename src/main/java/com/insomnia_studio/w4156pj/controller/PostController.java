@@ -1,10 +1,9 @@
-package com.insomnia_studio.w4156nosecurity.controller;
+package com.insomnia_studio.w4156pj.controller;
 
-import com.insomnia_studio.w4156nosecurity.model.Post;
-import com.insomnia_studio.w4156nosecurity.repository.PostEntityRepository;
-import com.insomnia_studio.w4156nosecurity.service.PostService;
+import com.insomnia_studio.w4156pj.model.Post;
+import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
+import com.insomnia_studio.w4156pj.service.PostService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;

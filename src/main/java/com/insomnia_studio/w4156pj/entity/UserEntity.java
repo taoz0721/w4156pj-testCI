@@ -1,4 +1,4 @@
-package com.insomnia_studio.w4156nosecurity.entity;
+package com.insomnia_studio.w4156pj.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity

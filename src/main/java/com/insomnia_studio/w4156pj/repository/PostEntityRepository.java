@@ -1,6 +1,6 @@
-package com.insomnia_studio.w4156nosecurity.repository;
+package com.insomnia_studio.w4156pj.repository;
 
-import com.insomnia_studio.w4156nosecurity.entity.PostEntity;
+import com.insomnia_studio.w4156pj.entity.PostEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
-package com.insomnia_studio.w4156nosecurity.service;
+package com.insomnia_studio.w4156pj.service;
 
-import com.insomnia_studio.w4156nosecurity.model.Post;
+import com.insomnia_studio.w4156pj.model.Post;
 
 import java.util.Optional;
 import java.util.UUID;

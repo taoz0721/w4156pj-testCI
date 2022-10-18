@@ -1,4 +1,4 @@
-package com.insomnia_studio.w4156nosecurity.model;
+package com.insomnia_studio.w4156pj.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

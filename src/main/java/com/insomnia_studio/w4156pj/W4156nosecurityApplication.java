@@ -1,4 +1,4 @@
-package com.insomnia_studio.w4156nosecurity;
+package com.insomnia_studio.w4156pj;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

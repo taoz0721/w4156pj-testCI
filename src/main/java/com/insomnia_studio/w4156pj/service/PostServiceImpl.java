@@ -1,8 +1,8 @@
-package com.insomnia_studio.w4156nosecurity.service;
+package com.insomnia_studio.w4156pj.service;
 
-import com.insomnia_studio.w4156nosecurity.entity.PostEntity;
-import com.insomnia_studio.w4156nosecurity.model.Post;
-import com.insomnia_studio.w4156nosecurity.repository.PostEntityRepository;
+import com.insomnia_studio.w4156pj.entity.PostEntity;
+import com.insomnia_studio.w4156pj.model.Post;
+import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
