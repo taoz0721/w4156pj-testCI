@@ -9,6 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
@@ -18,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Transactional
-public class CommentEntity {
+public class CommentEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -28,14 +29,12 @@ public class CommentEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
-    private String userId;
-
     @ManyToOne(fetch = FetchType.EAGER)
     private PostEntity post;
 
-    private UUID postId;
+//    @ManyToOne
+//    private CommentEntity parentComment;
 
-    private String parentId;
 
     private Integer LikesNum;
 
