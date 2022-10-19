@@ -3,6 +3,7 @@ package com.insomnia_studio.w4156pj.service;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.model.Post;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -10,12 +11,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class PostServiceImpl implements PostService {
     private PostEntityRepository postEntityRepository;
-
-    public PostServiceImpl(PostEntityRepository postEntityRepository) {
-        this.postEntityRepository = postEntityRepository;
-    }
 
     @Override
     public Post addPost(Post post) throws Exception {
@@ -47,8 +45,7 @@ public class PostServiceImpl implements PostService {
             postEntity.setTitle(post.getTitle());
             postEntity.setContent(post.getContent());
             postEntity.setTags(post.getTags());
-            postEntityRepository.save(postEntity);
-            Post newPost = new Post();
+            postEntity = postEntityRepository.save(postEntity);
             BeanUtils.copyProperties(postEntity, post);
         } catch (Exception e) {
             throw new Exception("Could not update Post: " + e);

@@ -8,6 +8,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,10 +21,25 @@ import java.util.Set;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Type(type="org.hibernate.type.UUIDCharType")
     private String userId;
+
+    private String firstName;
+
+    private String lastName;
+
+    @ElementCollection
+    private List<String> followers;
+
+    @ElementCollection
+    private List<String> followedBy;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date userCreatedTime;
+
+    @PrePersist
+    protected void onCreate() {
+        userCreatedTime = new Date();
+    }
 
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")

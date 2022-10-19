@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface PostEntityRepository extends JpaRepository<PostEntity, String> {
+public interface PostEntityRepository extends JpaRepository<PostEntity, UUID> {
     Optional<PostEntity> findByPostId(UUID id);
 
     Integer deletePostEntityByPostId(UUID id);
