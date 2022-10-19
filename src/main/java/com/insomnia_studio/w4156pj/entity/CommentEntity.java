@@ -10,8 +10,6 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -31,14 +29,12 @@ public class CommentEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private PostEntity post;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private CommentEntity parentComment;
+//    @ManyToOne
+//    private CommentEntity parentComment;
 
-    @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<CommentEntity> childComments = new HashSet<>();
 
     private Integer LikesNum;
 
