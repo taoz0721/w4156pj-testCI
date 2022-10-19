@@ -26,16 +26,21 @@ public class CommentEntity {
     private UUID commentId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_id")
+    private String userId;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private PostEntity post;
 
-    private int dislikeNum;
-    private int likeNum;
+    private UUID postId;
 
-    private String content;
+    private String parentId;
 
+    private Integer LikesNum;
+
+    private Integer dislikesNum;
+
+    @Lob
+    private String Content;
 }

@@ -60,25 +60,21 @@ public class UserServiceImpl implements UserService {
 
     private List<User> changeFollower(String userId, String followerId, String operation) {
         UserEntity userEntity = userEntityRepository.findByUserId(userId).get();
-        List<String> followers = userEntity.getFollowers();
         if (operation == "add") {
-            followers.add(followerId);
+            userEntity.addFollower(followerId);
         } else {
-            followers.remove(followerId);
+            userEntity.removeFollower(followerId);
         }
-        userEntity.setFollowers(followers);
         userEntity = userEntityRepository.save(userEntity);
         User user1 = new User();
         BeanUtils.copyProperties(userEntity, user1);
 
         userEntity = userEntityRepository.findByUserId(followerId).get();
-        List<String> followedBy = userEntity.getFollowedBy();
         if (operation == "add") {
-            followedBy.add(userId);
+            userEntity.addFollowedBy(userId);
         } else {
-            followedBy.remove(userId);
+            userEntity.removeFollowBy(userId);
         }
-        userEntity.setFollowedBy(followedBy);
         userEntity = userEntityRepository.save(userEntity);
         User user2 = new User();
         BeanUtils.copyProperties(userEntity, user2);

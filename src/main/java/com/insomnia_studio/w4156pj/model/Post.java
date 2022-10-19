@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -15,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Post {
     private UUID postId;
-    private List<String> tags;
+    private Set<String> tags;
     private UUID userId;
     private String title;
     private String content;

@@ -9,10 +9,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.transaction.Transactional;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "post")
@@ -29,8 +26,7 @@ public class PostEntity {
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity user;
 
 
@@ -39,7 +35,11 @@ public class PostEntity {
     private String content;
 
     @ElementCollection
-    private List<String> tags;
+    @CollectionTable(name = "post_tags")
+    private Set<String> tags = new HashSet<>();
+
+    @OneToMany(mappedBy = "post",cascade = CascadeType.PERSIST)
+    private Set<CommentEntity> comments = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date postCreatedTime;
@@ -56,7 +56,4 @@ public class PostEntity {
     protected void onUpdate() {
         postUpdatedTime = new Date();
     }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    private Set<CommentEntity> comments;
 }

@@ -19,8 +19,8 @@ public class User {
     private String userId;
     private String firstName;
     private String lastName;
-    private List<String> followers;
-    private List<String> followedBy;
+    private Set<String> followers;
+    private Set<String> followedBy;
     private Date userCreatedTime;
     private Set<PostEntity> posts;
 }

@@ -8,9 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "user")
@@ -28,10 +26,12 @@ public class UserEntity {
     private String lastName;
 
     @ElementCollection
-    private List<String> followers;
+    @CollectionTable(name = "user_followers")
+    private Set<String> followers = new HashSet<>();
 
     @ElementCollection
-    private List<String> followedBy;
+    @CollectionTable(name = "user_followedBy")
+    private Set<String> followedBy = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date userCreatedTime;
@@ -41,10 +41,35 @@ public class UserEntity {
         userCreatedTime = new Date();
     }
 
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Set<PostEntity> posts = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private Set<PostEntity> posts;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private Set<CommentEntity> comments = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private Set<CommentEntity> comments;
+    public void addPost(PostEntity postEntity) {
+        posts.add(postEntity);
+        postEntity.setUser(this);
+    }
+
+    public void removePost(PostEntity postEntity) {
+        posts.remove(postEntity);
+        postEntity.setUser(null);
+    }
+
+    public void addFollower(String followId) {
+        followers.add(followId);
+    }
+
+    public void addFollowedBy(String userId) {
+        followedBy.add(userId);
+    }
+
+    public void removeFollower(String followId) {
+        followers.remove(followId);
+    }
+
+    public void removeFollowBy(String userId) {
+        followedBy.remove(userId);
+    }
 }
