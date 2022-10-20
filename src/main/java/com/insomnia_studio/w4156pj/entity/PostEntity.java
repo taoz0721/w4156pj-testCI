@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -31,7 +32,6 @@ public class PostEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
-
 
 
     @Lob
@@ -56,4 +56,7 @@ public class PostEntity {
     protected void onUpdate() {
         postUpdatedTime = new Date();
     }
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
+    private Set<CommentEntity> comments;
 }
