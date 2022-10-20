@@ -22,7 +22,6 @@ public class Comment {
 
     private PostEntity post;
 
-
     private Integer LikesNum;
 
     private Integer dislikesNum;
