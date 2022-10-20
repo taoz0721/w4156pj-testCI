@@ -26,7 +26,7 @@ public class PostEntity {
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID postId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
 
@@ -38,7 +38,7 @@ public class PostEntity {
     @CollectionTable(name = "post_tags")
     private Set<String> tags = new HashSet<>();
 
-    @OneToMany(mappedBy = "post",cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
     private Set<CommentEntity> comments = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)

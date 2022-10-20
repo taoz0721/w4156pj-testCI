@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Post {
     private UUID postId;
     private Set<String> tags;
-    private UUID userId;
+//    private UUID userId;
     private String title;
     private String content;
     private Date postCreatedTime;

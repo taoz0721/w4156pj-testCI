@@ -1,38 +1,16 @@
 package com.insomnia_studio.w4156pj.controller;
 
-import com.insomnia_studio.w4156pj.entity.CommentEntity;
 import com.insomnia_studio.w4156pj.model.Comment;
-import com.insomnia_studio.w4156pj.model.Post;
-import com.insomnia_studio.w4156pj.service.CommentService;
-import org.apache.el.parser.AstFalse;
+import com.insomnia_studio.w4156pj.repository.CommentEntityRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.transaction.Transactional;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/comment")
+@RequestMapping("/api/v1/post/{postId}/comment/")
+@AllArgsConstructor
 public class CommentController {
-    private final CommentService commentService;
-
-    public CommentController(CommentService commentService) {
-        this.commentService = commentService;
-    }
-
-    // Post
-    @PostMapping("/create")
-    public Comment createComment(@RequestBody Comment comment) {
-        return commentService.createComment(comment);
-    }
-
-    @GetMapping("/{commentId}")
-    public Optional<Comment> getCommentByCommentId(@PathVariable UUID commentId) {
-        return commentService.getCommentById(commentId);
-    }
-
-
+    private CommentEntityRepository commentEntityRepository;
 
 }
