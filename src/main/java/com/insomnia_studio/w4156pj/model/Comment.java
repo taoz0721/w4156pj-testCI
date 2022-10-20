@@ -18,10 +18,8 @@ import java.util.UUID;
 public class Comment {
     private UUID commentId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
     private PostEntity post;
 
 
@@ -29,6 +27,5 @@ public class Comment {
 
     private Integer dislikesNum;
 
-    @Lob
     private String Content;
 }

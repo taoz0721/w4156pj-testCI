@@ -20,7 +20,7 @@ public class PostServiceImpl implements PostService {
         try {
             PostEntity postEntity = new PostEntity();
             BeanUtils.copyProperties(post, postEntity);
-            postEntityRepository.save(postEntity);
+            postEntity = postEntityRepository.save(postEntity);
             post.setPostId(postEntity.getPostId());
             post.setPostCreatedTime(postEntity.getPostCreatedTime());
             post.setPostUpdatedTime(postEntity.getPostUpdatedTime());
