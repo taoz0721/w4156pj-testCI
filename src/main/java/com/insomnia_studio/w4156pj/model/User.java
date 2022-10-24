@@ -23,4 +23,10 @@ public class User {
     private Set<String> followedBy;
     private Date userCreatedTime;
     private Set<PostEntity> posts;
+
+    public User(String userId, String firstName, String lastName) {
+        this.userId = userId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
 }
