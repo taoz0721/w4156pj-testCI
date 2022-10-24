@@ -8,7 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface CommentRepository extends JpaRepository<CommentEntity, String> {
+public interface CommentRepository extends JpaRepository<CommentEntity, UUID> {
     Optional<CommentEntity> findByCommentId(UUID id);
 
     Integer deleteCommentEntityByCommentId(UUID id);

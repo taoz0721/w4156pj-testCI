@@ -1,4 +1,4 @@
-package com.insomnia_studio.w4156pj;
+package com.insomnia_studio.w4156pj.controller;
 
 import com.insomnia_studio.w4156pj.controller.PostController;
 import com.insomnia_studio.w4156pj.model.Post;

@@ -1,5 +1,7 @@
 package com.insomnia_studio.w4156pj.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,7 +28,7 @@ public class PostEntity {
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID postId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity user;
 
 
@@ -39,6 +41,7 @@ public class PostEntity {
     private Set<String> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
+    @JsonBackReference
     private Set<CommentEntity> comments = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
