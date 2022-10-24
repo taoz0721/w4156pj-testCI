@@ -33,7 +33,8 @@ public class CommentServiceImpl implements CommentService{
             CommentEntity commentEntity = new CommentEntity();
 
             BeanUtils.copyProperties(comment, commentEntity);
-            commentRepository.save(commentEntity);
+            commentEntity = commentRepository.save(commentEntity);
+            comment.setCommentId(commentEntity.getCommentId());
         }
         else {
             //return null?
@@ -45,7 +46,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public Optional<Comment> getCommentById(UUID commentId) {
-        Optional<CommentEntity> commentEntity = commentRepository.findCommentEntitiesByCommentId(commentId);
+        Optional<CommentEntity> commentEntity = commentRepository.findByCommentId(commentId);
         if (commentEntity.isEmpty()) {
             return Optional.empty();
         }
@@ -62,4 +63,11 @@ public class CommentServiceImpl implements CommentService{
         return is_deleted;
     }
 
+    public void setCommentRepository(CommentRepository commentRepository) {
+        this.commentRepository = commentRepository;
+    }
+
+    public void setPostEntityRepository(PostEntityRepository postEntityRepository) {
+        this.postEntityRepository = postEntityRepository;
+    }
 }

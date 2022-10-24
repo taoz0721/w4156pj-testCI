@@ -28,5 +28,11 @@ public class Comment {
 
     private String Content;
 
-
+    public Comment(UserEntity user, PostEntity post, Integer likesNum, Integer dislikesNum, String content) {
+        this.user = user;
+        this.post = post;
+        LikesNum = likesNum;
+        this.dislikesNum = dislikesNum;
+        Content = content;
+    }
 }

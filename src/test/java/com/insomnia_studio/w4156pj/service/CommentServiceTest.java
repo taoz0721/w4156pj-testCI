@@ -53,8 +53,8 @@ public class CommentServiceTest {
 
         Mockito.when(postEntityRepository.existsByPostId(post.getPostId())).thenReturn(true);
 
-        Comment addedComment = commentService.createComment(comment);
-        Assertions.assertEquals(comment, addedComment);
+        Optional<Comment> addedComment = commentService.addComment(comment);
+        Assertions.assertEquals(Optional.of(comment), addedComment);
     }
 
     @Test
@@ -69,8 +69,8 @@ public class CommentServiceTest {
         Mockito.when(postEntityRepository.existsByPostId(post.getPostId())).thenReturn(false);
 
         // TO BE FIXED: Should return error message after implementing ResponseDTO
-        Comment addedComment = commentService.createComment(comment);
-        Assertions.assertEquals(comment, addedComment);
+        Optional<Comment> addedComment = commentService.addComment(comment);
+        Assertions.assertEquals(Optional.empty(), addedComment);
     }
 
     @Test
@@ -80,9 +80,11 @@ public class CommentServiceTest {
         post.setPostId(UUID.randomUUID());
         UserEntity user = new UserEntity();
         user.setUserId("123");
-        CommentEntity comment = new CommentEntity(UUID.randomUUID(),user, post, 0, 0, "aaa");
+        CommentEntity comment = new CommentEntity();
+        comment.setCommentId(UUID.randomUUID());
 
-        Mockito.when(commentRepository.findCommentEntitiesByCommentId(comment.getCommentId())).thenReturn(Optional.of(comment));
+
+        Mockito.when(commentRepository.findByCommentId(comment.getCommentId())).thenReturn(Optional.of(comment));
 
         Comment expectedComment = new Comment();
         BeanUtils.copyProperties(comment, expectedComment);
@@ -98,9 +100,11 @@ public class CommentServiceTest {
         post.setPostId(UUID.randomUUID());
         UserEntity user = new UserEntity();
         user.setUserId("123");
-        CommentEntity comment = new CommentEntity(UUID.randomUUID(), user, post, 0, 0, "aaa");
+        CommentEntity comment = new CommentEntity();
+        comment.setCommentId(UUID.randomUUID());
 
-        Mockito.when(commentRepository.findCommentEntitiesByCommentId(comment.getCommentId())).thenReturn(Optional.empty());
+
+        Mockito.when(commentRepository.findByCommentId(comment.getCommentId())).thenReturn(Optional.empty());
 
         // TO BE FIXED: Should return error message after implementing ResponseDTO
         Optional<Comment> foundComment = commentService.getCommentById(comment.getCommentId());
