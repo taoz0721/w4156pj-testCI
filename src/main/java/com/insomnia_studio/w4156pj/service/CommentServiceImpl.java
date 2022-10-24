@@ -26,23 +26,40 @@ public class CommentServiceImpl implements CommentService{
 
 
     @Override
-    public Comment createComment(Comment comment) {
+    public Optional<Comment> addComment(Comment comment) {
         // TO BE FIXED: Different response if the comment cannot be inserted
-        if (postEntityRepository.existsByPostId(comment.getPostId())) {
+        if (postEntityRepository.existsByPostId(comment.getPost().getPostId())) {
+        //if (postEntityRepository.existsByPostId(comment.getPostId())) {
             CommentEntity commentEntity = new CommentEntity();
 
             BeanUtils.copyProperties(comment, commentEntity);
             commentRepository.save(commentEntity);
         }
+        else {
+            //return null?
+            return Optional.empty();
+        }
 
-        return comment;
+        return Optional.of(comment);
     }
 
     @Override
     public Optional<Comment> getCommentById(UUID commentId) {
         Optional<CommentEntity> commentEntity = commentRepository.findCommentEntitiesByCommentId(commentId);
+        if (commentEntity.isEmpty()) {
+            return Optional.empty();
+        }
+
         Comment comment = new Comment();
-        BeanUtils.copyProperties(commentEntity, comment);
+        BeanUtils.copyProperties(commentEntity.get(), comment);
+
         return Optional.of(comment);
     }
+
+    @Override
+    public Boolean deleteCommentById(UUID commentId) {
+        Boolean is_deleted = (commentRepository.deleteCommentEntityByCommentId(commentId) == 1);
+        return is_deleted;
+    }
+
 }

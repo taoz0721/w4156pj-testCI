@@ -46,4 +46,6 @@ public class CommentEntity implements Serializable {
 
     @Lob
     private String Content;
+
+
 }
