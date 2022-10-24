@@ -39,6 +39,7 @@ public class PostServiceImplTest {
         postEntity.setPostId(UUID.randomUUID());
         postEntity.setPostCreatedTime(new Date());
         postEntity.setPostUpdatedTime(new Date());
+
         // when
         when(postrepository.save(Mockito.any(PostEntity.class))).thenReturn(postEntity);
         //test
