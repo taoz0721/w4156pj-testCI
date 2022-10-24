@@ -1,6 +1,10 @@
 # COMS4156 Project
 
-API service for formatting and managing posts for clients like 
+Team Members: Qingyue Jiao(qj2168), Dawei He(dh3027), Lixuan Yang(ly2555), Zhen Tao(zt2276)
+
+Project Description:
+
+This is an API service for formatting and managing posts for clients like StreetEasy.com, Instagram, Facebook Marketplace
 
 
 ## Platform & Framework
@@ -20,81 +24,55 @@ Test runner & mocking framework: built-in tools in IntelliJ IDEA & Mockito
 Coverage tracker: built-in tools in IntelliJ IDEA
 
 
-### How to Build, Test, Run
+## How to Build, Test, Run
+
+Build:  
+
+	a. clone the repo to the local machine.  
+	b. have a JAVA IDE, we use Eclipse so we will use it as the example IDE in this documentation.  
+	c. have Java and maven installed on the computer, have lombok installed in the eclipse  
+	d. have jdk, maven configured in the eclipse  
+	e. File --> import --> Existing Maven Project --> choose the folder service-auth(or service-operation) --> finish  
+	f. wait for the maven to auto-download all required dependencies jar  
+	g. Project --> clean to clean the project first  
+	h. right-click on the project folder --> maven --> Update Project to update and build the project  
+
+Run:  
+
+  	Run the project locally:  
+		a. build the project first described above  
+		b. run src/main/java/ServiceAuthApplication.java(or src/main/java/ServiceOperationApplication.java for service-operation) as java Application (right-click on the file --> run as.. --> Java Application)  
+
+	Run the project on the VM(deployment):  
+		a. right-click on the project folder --> run as --> maven clean  
+		b. right-click on the project folder --> run as --> maven install  
+		c. upload the service-auth-0.0.1-SNAPSHOT.jar(or service-operation-0.0.1-SNAPSHOT.jar) file in the src/target/ to the VM  
+		d. have java, maven, MySQL installed on the VM  
+		e. on the VM, run "nohup java -jar service-auth(operation)-0.0.1-SNAPSHOT.jar &"  
+		
+Test:
+
+	Unit Test:  
+		In IDE:  
+			a. all test cases/code are written in src/test/java/com/sangria/auth(operation)/ServiceAuth(Operation)ApplicationTests.java  
+			b. run the .java as Junit Test(right-click on the file --> run as --> Junit Test)  
+		In Linux:
+			javac -cp .:service-operation(auth)-0.0.1-SNAPSHOT.jar org.junit.runner.JUnitCore service-operation(auth)/src/test/java/com/sangria/operation(auth)/ServiceOperation(Auth)ApplicationTests.java  
+		
+	Test via Postman:  
+		a. have the project deployed and run on the vm as described above  
+		b. in the Postman, send requests to the endpoints: e.g. 35.196.112.19/auth/gameManager/login with parameters  
+		
+	Test in CI:  
+		All Unit tests have been included in the Github Action and will run on every push.  
 
 
+## API Entry Points
 
-### API Entry Points
 
-A step by step series of examples that tell you how to get a development
-environment running
+Style Checker and Static Bug Finder:  
+We are using the SonarCloud as the style checker and static bug finder during the process of CI using Github Action, and the report could be found here: 
+	
+Coverage Test:  
+under development
 
-Say what the step will be
-
-    Give the example
-
-And repeat
-
-    until finished
-
-End with an example of getting some data out of the system or using it
-for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Sample Tests
-
-Explain what these tests test and why
-
-    Give an example
-
-### Style test
-
-Checks if the best practices and the right coding style has been used.
-
-    Give an example
-
-## Deployment
-
-Add additional notes to deploy this on a live system
-
-## Built With
-
-  - [Contributor Covenant](https://www.contributor-covenant.org/) - Used
-    for the Code of Conduct
-  - [Creative Commons](https://creativecommons.org/) - Used to choose
-    the license
-
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code
-of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [Semantic Versioning](http://semver.org/) for versioning. For the versions
-available, see the [tags on this
-repository](https://github.com/PurpleBooth/a-good-readme-template/tags).
-
-## Authors
-
-  - **Billie Thompson** - *Provided README Template* -
-    [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of
-[contributors](https://github.com/PurpleBooth/a-good-readme-template/contributors)
-who participated in this project.
-
-## License
-
-This project is licensed under the [CC0 1.0 Universal](LICENSE.md)
-Creative Commons License - see the [LICENSE.md](LICENSE.md) file for
-details
-
-## Acknowledgments
-
-  - Hat tip to anyone whose code is used
-  - Inspiration
-  - etc
