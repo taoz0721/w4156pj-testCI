@@ -69,7 +69,8 @@ Test:
 
 Client:
 1. POST http://localhost:8080/api/v1/client/register
-request body:
+
+Request body example:
 {
     "clientName": "clienttest"
 }
@@ -80,6 +81,7 @@ Comment:
 2. DELETE http://localhost:8080/api/v1/comment/{{commentId}}
 
 3. POST http://localhost:8080/api/v1/post/{{postId}}/comment/add
+
 Request body example:
 {
    "post": {
@@ -97,6 +99,7 @@ Request body example:
 
 Post:
 1. POST http://localhost:8080/api/v1/post
+
 Request body example:
 {
     "tags": ["tag1"],
@@ -106,6 +109,7 @@ Request body example:
 2. GET http://localhost:8080/api/v1/post/{{postId}}
 
 3. PUT http://localhost:8080/api/v1/post/{{postId}}
+
 Request body example:
 {
    "tags": ["tag2"],
@@ -116,6 +120,7 @@ Request body example:
 
 User:
 1. POST http://localhost:8080/api/v1/user
+
 Request body example:
 {
    "userId": "1",
@@ -125,6 +130,7 @@ Request body example:
 2. GET http://localhost:8080/api/v1/user/{{userId}}
 
 3. PUT http://localhost:8080/api/v1/user/{{userId}}
+
 Request body example:
 {
    "userId": "1",
