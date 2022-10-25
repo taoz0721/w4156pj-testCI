@@ -1,8 +1,10 @@
-package com.insomnia_studio.w4156pj;
+package com.insomnia_studio.w4156pj.service;
 
 
+import com.insomnia_studio.w4156pj.entity.ClientEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.model.Post;
+import com.insomnia_studio.w4156pj.repository.ClientRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 
 import com.insomnia_studio.w4156pj.service.PostServiceImpl;
@@ -27,6 +29,9 @@ import static org.mockito.Mockito.when;
 public class PostServiceImplTest {
     @Mock
     private PostEntityRepository postrepository;
+    @Mock
+    private ClientRepository clientRepository;
+
     @InjectMocks
     private PostServiceImpl postserviceimpl;
 
@@ -34,7 +39,8 @@ public class PostServiceImplTest {
     @Test
     public void testAddPost() throws Exception {
         //setup
-        Post post =new Post(null,new HashSet<>(Arrays.asList("tag1")),"Title1","Content1",null,null );
+        ClientEntity client = new ClientEntity(UUID.randomUUID(), "a");
+        Post post =new Post(null, client, new HashSet<>(Arrays.asList("tag1")),"Title1","Content1",null,null );
         PostEntity postEntity = new PostEntity();
         postEntity.setPostId(UUID.randomUUID());
         postEntity.setPostCreatedTime(new Date());
@@ -42,6 +48,7 @@ public class PostServiceImplTest {
 
         // when
         when(postrepository.save(Mockito.any(PostEntity.class))).thenReturn(postEntity);
+        when(clientRepository.existsByClientId(Mockito.any())).thenReturn(true);
         //test
         Post addedpost = postserviceimpl.addPost(post);
         //assertion

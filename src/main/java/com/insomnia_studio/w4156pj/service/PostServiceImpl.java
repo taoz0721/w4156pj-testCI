@@ -2,6 +2,7 @@ package com.insomnia_studio.w4156pj.service;
 
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.model.Post;
+import com.insomnia_studio.w4156pj.repository.ClientRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -14,16 +15,20 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PostServiceImpl implements PostService {
     private PostEntityRepository postEntityRepository;
+    private ClientRepository clientRepository;
 
     @Override
     public Post addPost(Post post) throws Exception {
         try {
-            PostEntity postEntity = new PostEntity();
-            BeanUtils.copyProperties(post, postEntity);
-            postEntity = postEntityRepository.save(postEntity);
-            post.setPostId(postEntity.getPostId());
-            post.setPostCreatedTime(postEntity.getPostCreatedTime());
-            post.setPostUpdatedTime(postEntity.getPostUpdatedTime());
+            // TO BE FIXED: should return error message if client is not valid
+            if (post.getClient() != null && clientRepository.existsByClientId(post.getClient().getClientId())) {
+                PostEntity postEntity = new PostEntity();
+                BeanUtils.copyProperties(post, postEntity);
+                postEntity = postEntityRepository.save(postEntity);
+                post.setPostId(postEntity.getPostId());
+                post.setPostCreatedTime(postEntity.getPostCreatedTime());
+                post.setPostUpdatedTime(postEntity.getPostUpdatedTime());
+            }
         } catch (Exception e) {
             throw new Exception("Could not save Post: " + e);
         }

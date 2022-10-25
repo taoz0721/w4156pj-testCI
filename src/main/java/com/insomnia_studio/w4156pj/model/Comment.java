@@ -1,5 +1,6 @@
 package com.insomnia_studio.w4156pj.model;
 
+import com.insomnia_studio.w4156pj.entity.ClientEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.entity.UserEntity;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,8 @@ public class Comment {
 
     private PostEntity post;
 
+    private ClientEntity client;
+
     private Integer LikesNum;
 
     private Integer dislikesNum;
@@ -35,4 +38,6 @@ public class Comment {
         this.dislikesNum = dislikesNum;
         Content = content;
     }
+
+
 }

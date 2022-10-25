@@ -1,5 +1,6 @@
 package com.insomnia_studio.w4156pj.model;
 
+import com.insomnia_studio.w4156pj.entity.ClientEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class User {
     private String userId;
+    private ClientEntity client;
     private String firstName;
     private String lastName;
     private Set<String> followers;

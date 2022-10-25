@@ -1,6 +1,8 @@
 package com.insomnia_studio.w4156pj.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -10,6 +12,8 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "client")
+@AllArgsConstructor
+@NoArgsConstructor
 public class ClientEntity {
 
     @Id
@@ -18,6 +22,5 @@ public class ClientEntity {
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID clientId;
 
-    @Column(nullable = false, unique = true, length = 20)
     private String clientName;
 }

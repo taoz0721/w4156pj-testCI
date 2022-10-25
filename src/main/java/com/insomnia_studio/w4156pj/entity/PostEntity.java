@@ -29,8 +29,11 @@ public class PostEntity {
     private UUID postId;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JsonManagedReference(value="post-user")
     private UserEntity user;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ClientEntity client;
 
     @Lob
     private String title;
@@ -41,7 +44,7 @@ public class PostEntity {
     private Set<String> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JsonBackReference(value="comment-post")
     private Set<CommentEntity> comments = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -58,5 +61,17 @@ public class PostEntity {
     @PreUpdate
     protected void onUpdate() {
         postUpdatedTime = new Date();
+    }
+
+    // Used for the test in the first iteration
+    public PostEntity(UUID postId, ClientEntity client, String title, String content, Set<String> tags, Set<CommentEntity> comments, Date postCreatedTime, Date postUpdatedTime) {
+        this.postId = postId;
+        this.client = client;
+        this.title = title;
+        this.content = content;
+        this.tags = tags;
+        this.comments = comments;
+        this.postCreatedTime = postCreatedTime;
+        this.postUpdatedTime = postUpdatedTime;
     }
 }

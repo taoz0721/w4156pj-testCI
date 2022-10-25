@@ -10,5 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface ClientRepository extends JpaRepository<ClientEntity, Long> {
-    boolean existsClientEntityByClientId(UUID clientId);
+    boolean existsByClientId(UUID clientId);
 }

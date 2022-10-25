@@ -2,6 +2,7 @@ package com.insomnia_studio.w4156pj.service;
 
 import com.insomnia_studio.w4156pj.entity.UserEntity;
 import com.insomnia_studio.w4156pj.model.User;
+import com.insomnia_studio.w4156pj.repository.ClientRepository;
 import com.insomnia_studio.w4156pj.repository.UserEntityRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -14,13 +15,18 @@ import java.util.List;
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
     private UserEntityRepository userEntityRepository;
+    private ClientRepository clientRepository;
 
     @Override
     public User addUser(User user) {
-        UserEntity userEntity = new UserEntity();
-        BeanUtils.copyProperties(user, userEntity);
-        userEntity = userEntityRepository.save(userEntity);
-        user.setUserCreatedTime(userEntity.getUserCreatedTime());
+        // TO BE FIXED: Should return error message if client is not valid
+        if (clientRepository.existsByClientId(user.getClient().getClientId())) {
+            UserEntity userEntity = new UserEntity();
+            BeanUtils.copyProperties(user, userEntity);
+            userEntity = userEntityRepository.save(userEntity);
+            user.setUserCreatedTime(userEntity.getUserCreatedTime());
+        }
+
         return user;
     }
 

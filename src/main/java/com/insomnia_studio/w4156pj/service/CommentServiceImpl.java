@@ -4,6 +4,7 @@ import com.insomnia_studio.w4156pj.entity.CommentEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.model.Comment;
 import com.insomnia_studio.w4156pj.model.Post;
+import com.insomnia_studio.w4156pj.repository.ClientRepository;
 import com.insomnia_studio.w4156pj.repository.CommentRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 import org.springframework.beans.BeanUtils;
@@ -17,10 +18,12 @@ public class CommentServiceImpl implements CommentService{
 
     private CommentRepository commentRepository;
     private PostEntityRepository postEntityRepository;
+    private ClientRepository clientRepository;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostEntityRepository postEntityRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, PostEntityRepository postEntityRepository, ClientRepository clientRepository) {
         this.commentRepository = commentRepository;
         this.postEntityRepository = postEntityRepository;
+        this.clientRepository = clientRepository;
     }
 
 
@@ -28,7 +31,8 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public Optional<Comment> addComment(Comment comment) {
         // TO BE FIXED: Different response if the comment cannot be inserted
-        if (postEntityRepository.existsByPostId(comment.getPost().getPostId())) {
+        if (postEntityRepository.existsByPostId(comment.getPost().getPostId()) &&
+                comment.getClient() != null && clientRepository.existsByClientId(comment.getClient().getClientId())) {
         //if (postEntityRepository.existsByPostId(comment.getPostId())) {
             CommentEntity commentEntity = new CommentEntity();
 
@@ -69,5 +73,9 @@ public class CommentServiceImpl implements CommentService{
 
     public void setPostEntityRepository(PostEntityRepository postEntityRepository) {
         this.postEntityRepository = postEntityRepository;
+    }
+
+    public void setClientRepository(ClientRepository clientRepository) {
+        this.clientRepository = clientRepository;
     }
 }
