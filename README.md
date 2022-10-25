@@ -29,21 +29,20 @@ Coverage tracker: built-in tools in IntelliJ IDEA
 Build:  
 
 	a. clone the repo to the local machine.  
-	b. have a JAVA IDE, we use Eclipse so we will use it as the example IDE in this documentation.  
-	c. have Java and maven installed on the computer, have lombok installed in the eclipse  
-	d. have jdk, maven configured in the eclipse  
-	e. File --> import --> Existing Maven Project --> choose the folder service-auth(or service-operation) --> finish  
+	b. have a JAVA IDE, we use IntelliJ so we will use it as the example IDE in this documentation.  
+	c. have Java and maven installed on the computer, have lombok installed in the IntelliJ  
+	d. have jdk, maven configured in IntelliJ  
+	e. File --> import --> Existing Maven Project --> choose the downloaded file from the corresponding directory --> finish  
 	f. wait for the maven to auto-download all required dependencies jar  
-	g. Project --> clean to clean the project first  
-	h. right-click on the project folder --> maven --> Update Project to update and build the project  
+	g. Build Project --> click the top "Build" icon to build the entire project
 
 Run:  
 
   	Run the project locally:  
 		a. build the project first described above  
-		b. run src/main/java/ServiceAuthApplication.java(or src/main/java/ServiceOperationApplication.java for service-operation) as java Application (right-click on the file --> run as.. --> Java Application)  
+		b. from the dropdown menu on the right of "build" icon, select "W4156nosecurityApplication" and click the "run" next to the menu
 
-	Run the project on the VM(deployment):  
+	!NEED UPDATE! Run the project on the VM(deployment):  
 		a. right-click on the project folder --> run as --> maven clean  
 		b. right-click on the project folder --> run as --> maven install  
 		c. upload the service-auth-0.0.1-SNAPSHOT.jar(or service-operation-0.0.1-SNAPSHOT.jar) file in the src/target/ to the VM  
@@ -54,24 +53,104 @@ Test:
 
 	Unit Test:  
 		In IDE:  
-			a. all test cases/code are written in src/test/java/com/sangria/auth(operation)/ServiceAuth(Operation)ApplicationTests.java  
-			b. run the .java as Junit Test(right-click on the file --> run as --> Junit Test)  
-		In Linux:
+			a. all test cases/code are written in src/test/java/com/insomnia_studio/w4156pj 
+			b. run w4156pj as Junit Test(right-click on the folder --> Run 'Tests in 'com.insomnia_studio.w4156pj''  
+		!NEED UPDATE! In Linux:
 			javac -cp .:service-operation(auth)-0.0.1-SNAPSHOT.jar org.junit.runner.JUnitCore service-operation(auth)/src/test/java/com/sangria/operation(auth)/ServiceOperation(Auth)ApplicationTests.java  
 		
 	Test via Postman:  
-		a. have the project deployed and run on the vm as described above  
-		b. in the Postman, send requests to the endpoints: e.g. 35.196.112.19/auth/gameManager/login with parameters  
+		a. have the project built and run on IntelliJ 
+		b. in the Postman, send example requests to the endpoints specified in the next section  
 		
-	Test in CI:  
-		All Unit tests have been included in the Github Action and will run on every push.  
+
 
 
 ## API Entry Points
 
+1. POST http://localhost:8080/api/v1/client/register
+request body:
+{
+	"clientName": "clienttest"
+}
+3. GET http://localhost:8080/api/v1/comment/{{commentId}}
+request body:
+{
+	"commentId": "client1"
+}
+5. DELETE http://localhost:8080/api/v1/comment/{{commentId}}
+request body:
+{
+	"clientName": "client1"
+}
+7. POST http://localhost:8080/api/v1/post/{{postId}}/comment/add
+request body:
+{
+	"user": "usertest",
+	"post": "posttest",
+	"LikesNum": 50,
+	"disLikesNum": 30,
+	"Content": "contenttest"
+}
+9. POST http://localhost:8080/api/v1/post
+request body:
+{
+	"tags": ["tagtest"],
+	"title": "titletest",
+	"content": "contenttest"
+}
+11. GET http://localhost:8080/api/v1/post/{{postId}}
+request body:
+{
+	"clientName": "client1"
+}
+13. PUT http://localhost:8080/api/v1/post/{{postId}}
+request body:
+{
+	"clientName": "client1"
+}
+15. DELETE http://localhost:8080/api/v1/post/{{postId}}
+request body:
+{
+	"clientName": "client1"
+}
+17. POST http://localhost:8080/api/v1/user
+request body:
+{
+	"firstName": "usertest_first",
+	"lastName": "usertest_last",
+	"follower": ["followertest"],
+	"followedBy": ["followedbytest"],
+	"posts": ["posttest"] 
+}
+19. GET http://localhost:8080/api/v1/user/{{userId}}
+request body:
+{
+	"clientName": "client1"
+}
+21. PUT http://localhost:8080/api/v1/user/{{userId}}
+request body:
+{
+	"clientName": "client1"
+}
+23. DELETE http://localhost:8080/api/v1/user/{{userId}}
+request body:
+{
+	"clientName": "client1"
+}
+25. PUT http://localhost:8080/api/v1/user/{{userId}}/addFollower/{{followerId}}
+request body:
+{
+	"clientName": "client1"
+}
+27. PUT http://localhost:8080/api/v1/user/{{userId}}/deleteFollower/{{followerId}}
+request body:
+{
+	"clientName": "client1"
+}
 
 Style Checker and Static Bug Finder:  
-We are using the SonarCloud as the style checker and static bug finder during the process of CI using Github Action, and the report could be found here: 
+
+iamge insert here
 	
 Coverage Test:  
 under development
