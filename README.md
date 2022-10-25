@@ -106,6 +106,7 @@ Request body example:
     "title": "titletest",
     "content": "content"
 }
+
 2. GET http://localhost:8080/api/v1/post/{{postId}}
 
 3. PUT http://localhost:8080/api/v1/post/{{postId}}
@@ -116,6 +117,7 @@ Request body example:
    "title": "titleput",
    "content": "content"
 }
+
 4. DELETE http://localhost:8080/api/v1/post/{{postId}}
 
 User:
@@ -127,6 +129,7 @@ Request body example:
    "firstName": "Software",
    "lastName": "Engineer"
 }
+
 2. GET http://localhost:8080/api/v1/user/{{userId}}
 
 3. PUT http://localhost:8080/api/v1/user/{{userId}}
@@ -137,6 +140,7 @@ Request body example:
    "firstName": "Software",
    "lastName": "Engineering"
 }
+
 4. DELETE http://localhost:8080/api/v1/user/{{userId}}
 
 5. PUT http://localhost:8080/api/v1/user/{{userId}}/addFollower/{{followerId}}
