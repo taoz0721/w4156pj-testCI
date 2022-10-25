@@ -67,91 +67,82 @@ Test:
 
 ## API Entry Points
 
+Client:
 1. POST http://localhost:8080/api/v1/client/register
 request body:
 {
-	"clientName": "clienttest"
+    "clientName": "clienttest"
 }
-3. GET http://localhost:8080/api/v1/comment/{{commentId}}
-request body:
+
+Comment:
+1. GET http://localhost:8080/api/v1/comment/{{commentId}}
+
+2. DELETE http://localhost:8080/api/v1/comment/{{commentId}}
+
+3. POST http://localhost:8080/api/v1/post/{{postId}}/comment/add
+Request body example:
 {
-	"commentId": "client1"
+   "post": {
+   "postId": "099e5331-b079-4a45-9f76-305efd6498c9",
+   "tags": ["tag1"],
+   "title": "Hello",
+   "content": "Hello World",
+   "postCreatedTime": "2022-10-24T20:39:48.860+00:00",
+   "postUpdatedTime": null
+   },
+   "LikesNum": 5,
+   "dislikesNum": 0,
+   "content": "cotent."
 }
-5. DELETE http://localhost:8080/api/v1/comment/{{commentId}}
-request body:
+
+Post:
+1. POST http://localhost:8080/api/v1/post
+Request body example:
 {
-	"clientName": "client1"
+    "tags": ["tag1"],
+    "title": "titletest",
+    "content": "content"
 }
-7. POST http://localhost:8080/api/v1/post/{{postId}}/comment/add
-request body:
+2. GET http://localhost:8080/api/v1/post/{{postId}}
+
+3. PUT http://localhost:8080/api/v1/post/{{postId}}
+Request body example:
 {
-	"user": "usertest",
-	"post": "posttest",
-	"LikesNum": 50,
-	"disLikesNum": 30,
-	"Content": "contenttest"
+   "tags": ["tag2"],
+   "title": "titleput",
+   "content": "content"
 }
-9. POST http://localhost:8080/api/v1/post
-request body:
+4. DELETE http://localhost:8080/api/v1/post/{{postId}}
+
+User:
+1. POST http://localhost:8080/api/v1/user
+Request body example:
 {
-	"tags": ["tagtest"],
-	"title": "titletest",
-	"content": "contenttest"
+   "userId": "1",
+   "firstName": "Software",
+   "lastName": "Engineer"
 }
-11. GET http://localhost:8080/api/v1/post/{{postId}}
-request body:
+2. GET http://localhost:8080/api/v1/user/{{userId}}
+
+3. PUT http://localhost:8080/api/v1/user/{{userId}}
+Request body example:
 {
-	"clientName": "client1"
+   "userId": "1",
+   "firstName": "Software",
+   "lastName": "Engineering"
 }
-13. PUT http://localhost:8080/api/v1/post/{{postId}}
-request body:
-{
-	"clientName": "client1"
-}
-15. DELETE http://localhost:8080/api/v1/post/{{postId}}
-request body:
-{
-	"clientName": "client1"
-}
-17. POST http://localhost:8080/api/v1/user
-request body:
-{
-	"firstName": "usertest_first",
-	"lastName": "usertest_last",
-	"follower": ["followertest"],
-	"followedBy": ["followedbytest"],
-	"posts": ["posttest"] 
-}
-19. GET http://localhost:8080/api/v1/user/{{userId}}
-request body:
-{
-	"clientName": "client1"
-}
-21. PUT http://localhost:8080/api/v1/user/{{userId}}
-request body:
-{
-	"clientName": "client1"
-}
-23. DELETE http://localhost:8080/api/v1/user/{{userId}}
-request body:
-{
-	"clientName": "client1"
-}
-25. PUT http://localhost:8080/api/v1/user/{{userId}}/addFollower/{{followerId}}
-request body:
-{
-	"clientName": "client1"
-}
-27. PUT http://localhost:8080/api/v1/user/{{userId}}/deleteFollower/{{followerId}}
-request body:
-{
-	"clientName": "client1"
-}
+4. DELETE http://localhost:8080/api/v1/user/{{userId}}
+
+5. PUT http://localhost:8080/api/v1/user/{{userId}}/addFollower/{{followerId}}
+
+6. PUT http://localhost:8080/api/v1/user/{{userId}}/deleteFollower/{{followerId}}
 
 Style Checker and Static Bug Finder:  
-
-iamge insert here
-	
+![alt text](https://github.com/DavidHo666/w4156pj/blob/master/stylecheck.png?raw=true)
+If image not shown correctly, it is also added to the repository
 Coverage Test:  
 under development
+
+Problem to be fixed:
+The comment POST API  and User API need to be fixed because we added new figures lastly. We will fix them during nex iteration.
 
