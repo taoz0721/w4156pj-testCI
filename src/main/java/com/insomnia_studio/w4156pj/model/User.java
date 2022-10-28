@@ -19,6 +19,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     private String userId;
+
     private UUID clientId;
     private String firstName;
     private String lastName;

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUser(String userId) {
-        UserEntity userEntity = userEntityRepository.findByUserId(userId).get();
+        UserEntity userEntity = userEntityRepository.findByUserId(userId);
         User user = new User();
         BeanUtils.copyProperties(userEntity, user);
         return user;
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUserById(String userId, User user) {
-        UserEntity userEntity = userEntityRepository.findByUserId(userId).get();
+        UserEntity userEntity = userEntityRepository.findByUserId(userId);
         userEntity.setFirstName(user.getFirstName());
         userEntity.setLastName(user.getLastName());
         userEntity = userEntityRepository.save(userEntity);
@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private List<User> changeFollower(String userId, String followerId, String operation) {
-        UserEntity userEntity = userEntityRepository.findByUserId(userId).get();
+        UserEntity userEntity = userEntityRepository.findByUserId(userId);
         if (operation == "add") {
             userEntity.addFollower(followerId);
         } else {
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         User user1 = new User();
         BeanUtils.copyProperties(userEntity, user1);
 
-        userEntity = userEntityRepository.findByUserId(followerId).get();
+        userEntity = userEntityRepository.findByUserId(followerId);
         if (operation == "add") {
             userEntity.addFollowedBy(userId);
         } else {

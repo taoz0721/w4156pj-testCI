@@ -17,17 +17,19 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Post {
     private UUID postId;
-    private ClientEntity client;
+
+    private UUID clientId;
     private Set<String> tags;
-//    private UUID userId;
+    private String userId;
     private String title;
     private String content;
     private Date postCreatedTime;
     private Date postUpdatedTime;
 
     // Used for the test in the first iteration
-    public Post(UUID postId, Set<String> tags, String title, String content, Date postCreatedTime, Date postUpdatedTime) {
+    public Post(UUID postId, Set<String> tags, String userID,String title, String content, Date postCreatedTime, Date postUpdatedTime) {
         this.postId = postId;
+        this.userId = userID;
         this.tags = tags;
         this.title = title;
         this.content = content;

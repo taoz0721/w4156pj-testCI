@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface UserEntityRepository extends JpaRepository<UserEntity, String> {
-    Optional<UserEntity> findByUserId(String userId);
+    UserEntity findByUserId(String userId);
 
     Integer deleteUserEntityByUserId(String userId);
 }
