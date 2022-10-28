@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Boolean deleteUserById(String userId) {
         Boolean is_deleted = (userEntityRepository.deleteUserEntityByUserId(userId) == 1);
         return is_deleted;
