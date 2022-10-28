@@ -2,11 +2,13 @@ package com.insomnia_studio.w4156pj.service;
 
 import com.insomnia_studio.w4156pj.entity.CommentEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
+import com.insomnia_studio.w4156pj.entity.UserEntity;
 import com.insomnia_studio.w4156pj.model.Comment;
 import com.insomnia_studio.w4156pj.model.Post;
 import com.insomnia_studio.w4156pj.repository.ClientRepository;
 import com.insomnia_studio.w4156pj.repository.CommentRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
+import com.insomnia_studio.w4156pj.repository.UserEntityRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +22,13 @@ public class CommentServiceImpl implements CommentService{
     private PostEntityRepository postEntityRepository;
     private ClientRepository clientRepository;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostEntityRepository postEntityRepository, ClientRepository clientRepository) {
+    private UserEntityRepository userEntityRepository;
+
+    public CommentServiceImpl(CommentRepository commentRepository, PostEntityRepository postEntityRepository, ClientRepository clientRepository, UserEntityRepository userEntityRepository) {
         this.commentRepository = commentRepository;
         this.postEntityRepository = postEntityRepository;
         this.clientRepository = clientRepository;
+        this.userEntityRepository = userEntityRepository;
     }
 
 
@@ -37,6 +42,8 @@ public class CommentServiceImpl implements CommentService{
             BeanUtils.copyProperties(comment, commentEntity);
             PostEntity post = postEntityRepository.findByPostId(comment.getPostId());
             commentEntity.setPost(post);
+            UserEntity user = userEntityRepository.findByUserId(comment.getUserId());
+            commentEntity.setUser(user);
             commentEntity = commentRepository.save(commentEntity);
             comment.setCommentId(commentEntity.getCommentId());
         }
@@ -75,7 +82,12 @@ public class CommentServiceImpl implements CommentService{
         this.postEntityRepository = postEntityRepository;
     }
 
+    public void setUserEntityRepository(UserEntityRepository userEntityRepository) {
+        this.userEntityRepository = userEntityRepository;
+    }
+
     public void setClientRepository(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 }
+

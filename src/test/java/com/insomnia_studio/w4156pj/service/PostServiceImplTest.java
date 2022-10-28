@@ -40,7 +40,7 @@ public class PostServiceImplTest {
     public void testAddPost() throws Exception {
         //setup
         ClientEntity client = new ClientEntity(UUID.randomUUID(), "a");
-        Post post =new Post(null, client, new HashSet<>(Arrays.asList("tag1")),"Title1","Content1",null,null );
+        Post post =new Post(null, client, "Title1","Content1", new HashSet<>(Arrays.asList("tag1")),null,null );
         PostEntity postEntity = new PostEntity();
         postEntity.setPostId(UUID.randomUUID());
         postEntity.setPostCreatedTime(new Date());
