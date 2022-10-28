@@ -1,7 +1,6 @@
 package com.insomnia_studio.w4156pj.controller;
 
 import com.insomnia_studio.w4156pj.model.Comment;
-import com.insomnia_studio.w4156pj.model.Post;
 import com.insomnia_studio.w4156pj.repository.CommentEntityRepository;
 import com.insomnia_studio.w4156pj.service.CommentService;
 import com.insomnia_studio.w4156pj.service.PostService;
@@ -26,6 +25,7 @@ public class CommentController {
     //create
     @PostMapping("/post/{postId}/comment/add")
     public Optional<Comment> addComment(@RequestBody Comment comment){
+
         return commentService.addComment(comment);
     }
 
@@ -34,8 +34,6 @@ public class CommentController {
     public Optional<Comment> getCommentByCommentId(@PathVariable UUID commentId) {
         return commentService.getCommentById(commentId);
     }
-
-
 
     //delete
     @DeleteMapping("/comment/{commentId}")
