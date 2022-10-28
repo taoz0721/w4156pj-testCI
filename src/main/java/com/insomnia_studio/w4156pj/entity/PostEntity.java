@@ -29,10 +29,12 @@ public class PostEntity {
     private UUID postId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference(value="post-user")
+//    @JsonBackReference(value = "user-post")
+    @JoinColumn(name = "userId")
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "clientId")
     private ClientEntity client;
 
     @Lob

@@ -44,11 +44,11 @@ public class UserEntity {
     }
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonBackReference(value="post-user")
+//    @JsonBackReference(value = "user-post")
     private Set<PostEntity> posts = new HashSet<>();
 
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonBackReference(value="user-comment")
+//    @JsonBackReference(value = "user-comment")
     private Set<CommentEntity> comments = new HashSet<>();
 
     public void addPost(PostEntity postEntity) {

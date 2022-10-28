@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -18,7 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class User {
     private String userId;
-    private ClientEntity client;
+    private UUID clientId;
     private String firstName;
     private String lastName;
     private Set<String> followers;

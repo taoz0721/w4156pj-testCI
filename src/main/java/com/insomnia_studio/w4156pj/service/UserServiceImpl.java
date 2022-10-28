@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) {
         // TO BE FIXED: Should return error message if client is not valid
-        if (clientRepository.existsByClientId(user.getClient().getClientId())) {
+        if (clientRepository.existsByClientId(user.getClientId())) {
             UserEntity userEntity = new UserEntity();
             BeanUtils.copyProperties(user, userEntity);
             userEntity = userEntityRepository.save(userEntity);

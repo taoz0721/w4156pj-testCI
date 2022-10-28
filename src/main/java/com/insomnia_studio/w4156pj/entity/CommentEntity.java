@@ -31,14 +31,17 @@ public class CommentEntity implements Serializable {
     private UUID commentId;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference(value="user-comment")
+    @JoinColumn(name="userId")
+//    @JsonManagedReference
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="clientId")
     private ClientEntity client;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference(value="comment-post")
+//    @JsonManagedReference
+    @JoinColumn(name="postId")
     private PostEntity post;
 
     @ManyToOne(fetch = FetchType.EAGER)
