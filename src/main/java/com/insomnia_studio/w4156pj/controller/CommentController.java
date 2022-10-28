@@ -24,9 +24,9 @@ public class CommentController {
 
     //create
     @PostMapping("/post/{postId}/comment/add")
-    public Comment addComment(@RequestBody Comment comment){
+    public Comment addComment(@RequestBody Comment comment, @PathVariable UUID postId){
 
-        return commentService.addComment(comment);
+        return commentService.addComment(comment, postId);
     }
 
     //get

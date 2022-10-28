@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface CommentService {
 
-    Comment addComment(Comment comment);
+    Comment addComment(Comment comment, UUID postId);
 
     Comment getCommentById(UUID commentId);
 

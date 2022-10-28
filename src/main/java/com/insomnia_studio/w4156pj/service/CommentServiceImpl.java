@@ -34,13 +34,13 @@ public class CommentServiceImpl implements CommentService{
 
 
     @Override
-    public Comment addComment(Comment comment) {
-        if (postEntityRepository.existsByPostId(comment.getPostId()) &&
+    public Comment addComment(Comment comment, UUID postId) {
+        if (postEntityRepository.existsByPostId(postId) &&
                 comment.getClientId() != null && clientRepository.existsByClientId(comment.getClientId())) {
             //if (postEntityRepository.existsByPostId(comment.getPostId())) {
             CommentEntity commentEntity = new CommentEntity();
             BeanUtils.copyProperties(comment, commentEntity);
-            PostEntity post = postEntityRepository.findByPostId(comment.getPostId());
+            PostEntity post = postEntityRepository.findByPostId(postId);
             commentEntity.setPost(post);
             UserEntity user = userEntityRepository.findByUserId(comment.getUserId());
             commentEntity.setUser(user);
