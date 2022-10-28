@@ -24,14 +24,14 @@ public class CommentController {
 
     //create
     @PostMapping("/post/{postId}/comment/add")
-    public Optional<Comment> addComment(@RequestBody Comment comment){
+    public Comment addComment(@RequestBody Comment comment){
 
         return commentService.addComment(comment);
     }
 
     //get
     @GetMapping("/comment/{commentId}")
-    public Optional<Comment> getCommentByCommentId(@PathVariable UUID commentId) {
+    public Comment getCommentByCommentId(@PathVariable UUID commentId) {
         return commentService.getCommentById(commentId);
     }
 

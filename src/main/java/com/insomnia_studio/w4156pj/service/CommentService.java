@@ -7,9 +7,9 @@ import java.util.UUID;
 
 public interface CommentService {
 
-    Optional<Comment> addComment(Comment comment);
+    Comment addComment(Comment comment);
 
-    Optional<Comment> getCommentById(UUID commentId);
+    Comment getCommentById(UUID commentId);
 
     Boolean deleteCommentById(UUID commentId);
 }

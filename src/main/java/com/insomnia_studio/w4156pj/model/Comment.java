@@ -19,11 +19,11 @@ import java.util.UUID;
 public class Comment {
     private UUID commentId;
 
-    private UserEntity user;
+    private String userId;
 
-    private PostEntity post;
+    private UUID postId;
 
-    private ClientEntity client;
+    private UUID clientId;
 
     private Integer LikesNum;
 
@@ -31,9 +31,9 @@ public class Comment {
 
     private String Content;
 
-    public Comment(UserEntity user, PostEntity post, Integer likesNum, Integer dislikesNum, String content) {
-        this.user = user;
-        this.post = post;
+    public Comment(String userId, UUID postId, Integer likesNum, Integer dislikesNum, String content) {
+        this.userId = userId;
+        this.postId = postId;
         LikesNum = likesNum;
         this.dislikesNum = dislikesNum;
         Content = content;

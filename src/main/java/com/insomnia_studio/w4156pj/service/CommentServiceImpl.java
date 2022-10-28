@@ -29,36 +29,36 @@ public class CommentServiceImpl implements CommentService{
 
 
     @Override
-    public Optional<Comment> addComment(Comment comment) {
-        // TO BE FIXED: Different response if the comment cannot be inserted
-        if (postEntityRepository.existsByPostId(comment.getPost().getPostId()) &&
-                comment.getClient() != null && clientRepository.existsByClientId(comment.getClient().getClientId())) {
-        //if (postEntityRepository.existsByPostId(comment.getPostId())) {
+    public Comment addComment(Comment comment) {
+        if (postEntityRepository.existsByPostId(comment.getPostId()) &&
+                comment.getClientId() != null && clientRepository.existsByClientId(comment.getClientId())) {
+            //if (postEntityRepository.existsByPostId(comment.getPostId())) {
             CommentEntity commentEntity = new CommentEntity();
-
             BeanUtils.copyProperties(comment, commentEntity);
+            PostEntity post = postEntityRepository.findByPostId(comment.getPostId());
+            commentEntity.setPost(post);
             commentEntity = commentRepository.save(commentEntity);
             comment.setCommentId(commentEntity.getCommentId());
         }
         else {
             //return null?
-            return Optional.empty();
+            return null;
         }
 
-        return Optional.of(comment);
+        return comment;
     }
 
     @Override
-    public Optional<Comment> getCommentById(UUID commentId) {
+    public Comment getCommentById(UUID commentId) {
         Optional<CommentEntity> commentEntity = commentRepository.findByCommentId(commentId);
         if (commentEntity.isEmpty()) {
-            return Optional.empty();
+            return null;
         }
 
         Comment comment = new Comment();
         BeanUtils.copyProperties(commentEntity.get(), comment);
 
-        return Optional.of(comment);
+        return comment;
     }
 
     @Override
