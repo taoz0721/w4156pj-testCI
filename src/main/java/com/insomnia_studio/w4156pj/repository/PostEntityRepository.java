@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface PostEntityRepository extends JpaRepository<PostEntity, UUID> {
-    Optional<PostEntity> findByPostId(UUID id);
+    PostEntity findByPostId(UUID id);
 
     Integer deletePostEntityByPostId(UUID id);
 

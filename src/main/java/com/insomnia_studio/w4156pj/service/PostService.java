@@ -8,9 +8,9 @@ import java.util.UUID;
 public interface PostService {
     Post addPost(Post post) throws Exception;
 
-    Optional<Post> getPostById(UUID postId);
+    Post getPostById(UUID postId);
 
-    Optional<Post> updatePostById(UUID postId, Post post) throws Exception;
+    Post updatePostById(UUID postId, Post post) throws Exception;
 
     Boolean deletePostById(UUID postId);
 

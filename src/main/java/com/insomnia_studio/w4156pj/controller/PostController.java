@@ -26,12 +26,12 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public Optional<Post> getPostByPostId(@PathVariable UUID postId) {
+    public Post getPostByPostId(@PathVariable UUID postId) {
         return postService.getPostById(postId);
     }
 
     @PutMapping("/{postId}")
-    public Optional<Post> updatePostByPostId(@PathVariable UUID postId,
+    public Post updatePostByPostId(@PathVariable UUID postId,
                                             @RequestBody Post post) throws Exception {
         return postService.updatePostById(postId, post);
     }
