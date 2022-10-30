@@ -30,7 +30,7 @@ public class Comment {
 
     private Integer dislikesNum;
 
-    private String Content;
+    private String content;
 
     private Date commentCreatedTime;
 
@@ -41,7 +41,7 @@ public class Comment {
         this.postId = postId;
         LikesNum = likesNum;
         this.dislikesNum = dislikesNum;
-        Content = content;
+        content = content;
     }
 
 }

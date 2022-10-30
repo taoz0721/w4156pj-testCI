@@ -5,6 +5,7 @@ import com.insomnia_studio.w4156pj.entity.CommentEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.entity.UserEntity;
 import com.insomnia_studio.w4156pj.model.Comment;
+import com.insomnia_studio.w4156pj.model.Post;
 import com.insomnia_studio.w4156pj.repository.ClientEntityRepository;
 import com.insomnia_studio.w4156pj.repository.CommentEntityRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
@@ -47,7 +48,9 @@ public class CommentServiceImpl implements CommentService{
             commentEntity.setClient(clientEntity);
             commentEntity = commentEntityRepository.save(commentEntity);
             comment.setCommentId(commentEntity.getCommentId());
-
+            comment.setCommentCreatedTime(commentEntity.getCommentCreatedTime());
+            comment.setCommentUpdatedTime(commentEntity.getCommentUpdatedTime());
+            comment.setPostId(postEntity.getPostId());
         }
         else {
             return null;
@@ -57,26 +60,46 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Comment getCommentById(UUID commentId) {
-        Optional<CommentEntity> commentEntity = commentEntityRepository.findByCommentId(commentId);
-        if (commentEntity.isEmpty()) {
-            return null;
+    public Comment getCommentById(UUID commentId) throws Exception {
+        try{
+            CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
+            Comment comment = new Comment();
+            BeanUtils.copyProperties(commentEntity, comment);
+            comment.setUserId(commentEntity.getUser().getUserId());
+            comment.setClientId(commentEntity.getClient().getClientId());
+            comment.setPostId(commentEntity.getPost().getPostId());
+            return comment;
         }
-
-        Comment comment = new Comment();
-        BeanUtils.copyProperties(commentEntity.get(), comment);
-
-        return comment;
+        catch (Exception e){
+            throw new Exception("Could not find postId: " + e);
+        }
     }
 
     @Override
-    public Comment updateCommentById(UUID commentId, Comment comment) {
-        return null;
+    public Comment updateCommentById(UUID commentId, Comment comment) throws Exception {
+        try {
+            if (comment.getClientId() != null && clientEntityRepository.existsByClientId(comment.getClientId())) {
+                CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
+                commentEntity.setContent(comment.getContent());
+                commentEntity = commentEntityRepository.save(commentEntity);
+                BeanUtils.copyProperties(commentEntity, comment);
+                return comment;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            throw new Exception("Could not update comment: " + e);
+        }
     }
 
     @Override
     public Boolean deleteCommentById(UUID commentId, Comment comment) {
-        return null;
+        if (comment.getClientId() != null && clientEntityRepository.existsByClientId(comment.getClientId())) {
+            Boolean is_deleted = (commentEntityRepository.deleteCommentEntityByCommentId(commentId) == 1);
+            return is_deleted;
+        } else {
+            return false;
+        }
     }
 
 

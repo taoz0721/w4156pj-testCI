@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Repository
 public interface CommentEntityRepository extends JpaRepository<CommentEntity, UUID> {
-    Optional<CommentEntity> findByCommentId(UUID id);
+    CommentEntity findByCommentId(UUID commentID);
 
     Integer deleteCommentEntityByCommentId(UUID id);
 }

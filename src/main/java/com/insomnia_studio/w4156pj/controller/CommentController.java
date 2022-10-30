@@ -26,8 +26,14 @@ public class CommentController {
 
     //get
     @GetMapping("/comment/{commentId}")
-    public Comment getCommentByCommentId(@PathVariable UUID commentId) {
+    public Comment getCommentByCommentId(@PathVariable UUID commentId) throws Exception {
         return commentService.getCommentById(commentId);
+    }
+
+    @PutMapping("/comment/{commentId}")
+    public Comment updateCommentByCommentId(@PathVariable UUID commentId,
+                                            @RequestBody Comment comment) throws Exception {
+        return commentService.updateCommentById(commentId, comment);
     }
 
     //delete

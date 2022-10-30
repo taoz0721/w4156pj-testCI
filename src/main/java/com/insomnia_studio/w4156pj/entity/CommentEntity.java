@@ -72,5 +72,5 @@ public class CommentEntity implements Serializable {
     private Integer dislikesNum;
 
     @Lob
-    private String Content;
+    private String content;
 }

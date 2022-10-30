@@ -9,9 +9,9 @@ public interface CommentService {
 
     Comment addComment(Comment comment, UUID postId);
 
-    Comment getCommentById(UUID commentId);
+    Comment getCommentById(UUID commentId) throws Exception;
 
-    Comment updateCommentById(UUID commentId, Comment comment);
+    Comment updateCommentById(UUID commentId, Comment comment) throws Exception;
 
     Boolean deleteCommentById(UUID commentId, Comment comment);
 }

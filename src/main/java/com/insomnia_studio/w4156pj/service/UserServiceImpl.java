@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) {
         // TO BE FIXED: Should return error message if client is not valid
-        if (clientEntityRepository.existsByClientId(user.getClientId())) {
+        if (user.getClientId() != null && clientEntityRepository.existsByClientId(user.getClientId())) {
             UserEntity userEntity = new UserEntity();
             BeanUtils.copyProperties(user, userEntity);
             ClientEntity clientEntity = clientEntityRepository.findByClientId(user.getClientId());
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUserById(String userId, User user) {
-        if (clientEntityRepository.existsByClientId(user.getClientId())) {
+        if (user.getClientId() != null && clientEntityRepository.existsByClientId(user.getClientId())) {
             UserEntity userEntity = userEntityRepository.findByUserId(userId);
             userEntity.setFirstName(user.getFirstName());
             userEntity.setLastName(user.getLastName());
@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Boolean deleteUserById(String userId, User user) {
-        if (clientEntityRepository.existsByClientId(user.getClientId())) {
+        if (user.getClientId() != null && clientEntityRepository.existsByClientId(user.getClientId())) {
             Boolean is_deleted = (userEntityRepository.deleteUserEntityByUserId(userId) == 1);
             return is_deleted;
         } else {
