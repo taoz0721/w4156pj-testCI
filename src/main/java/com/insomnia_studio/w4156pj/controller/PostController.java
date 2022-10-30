@@ -26,7 +26,7 @@ public class PostController {
     }
 
     @GetMapping("/{postId}")
-    public Post getPostByPostId(@PathVariable UUID postId) {
+    public Post getPostByPostId(@PathVariable UUID postId) throws Exception {
         return postService.getPostById(postId);
     }
 

@@ -36,4 +36,12 @@ public class Post {
         this.postCreatedTime = postCreatedTime;
         this.postUpdatedTime = postUpdatedTime;
     }
+
+    public Post(UUID postId, UUID clientId, String userId, String title, String content) {
+        this.postId = postId;
+        this.clientId = clientId;
+        this.userId = userId;
+        this.title = title;
+        this.content = content;
+    }
 }

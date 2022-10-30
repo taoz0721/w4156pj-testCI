@@ -3,22 +3,24 @@ package com.insomnia_studio.w4156pj.service;
 
 import com.insomnia_studio.w4156pj.entity.ClientEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
+import com.insomnia_studio.w4156pj.entity.UserEntity;
 import com.insomnia_studio.w4156pj.model.Post;
 import com.insomnia_studio.w4156pj.repository.ClientRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 
-import com.insomnia_studio.w4156pj.service.PostServiceImpl;
-import org.hibernate.service.spi.InjectService;
+import com.insomnia_studio.w4156pj.repository.UserEntityRepository;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.BeanUtils;
+
 
 import java.util.*;
 
@@ -28,122 +30,178 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class PostServiceImplTest {
     @Mock
-    private PostEntityRepository postrepository;
+    private PostEntityRepository postRepository;
     @Mock
     private ClientRepository clientRepository;
+    @Mock
+    private UserEntityRepository userRepository;
 
     @InjectMocks
     private PostServiceImpl postserviceimpl;
 
-    @DisplayName("JUnit Test for addPost")
-    @Test
-    public void testAddPost() throws Exception {
-        //setup
-        ClientEntity client = new ClientEntity(UUID.randomUUID(), "a");
-        Post post =new Post(null, client, "Title1","Content1", new HashSet<>(Arrays.asList("tag1")),null,null );
-        PostEntity postEntity = new PostEntity();
+
+    private ClientEntity client;
+    private UserEntity user;
+    private Post post;
+    private PostEntity postEntity;
+    private Post expectedpost;
+
+    private Post newpost;
+    private PostEntity newPostEntity;
+    private Post updatePost;
+    @BeforeEach
+    public void setup(){
+        //setup client
+        client = new ClientEntity();
+        client.setClientId(UUID.randomUUID());
+        //setup user
+        user = new UserEntity();
+        user.setUserId("123");
+        //setup post
+        post = new Post();
+        post.setClientId(client.getClientId());
+        post.setUserId(user.getUserId());
+        post.setTitle("title");
+        post.setContent("content");
+        post.setTags(new HashSet<>(Arrays.asList("tag")));
+        post.setUserId(user.getUserId());
+        //setup postEntity
+        postEntity = new PostEntity();
+        BeanUtils.copyProperties(post,postEntity);
+        postEntity.setUser(user);
+        postEntity.setClient(client);
         postEntity.setPostId(UUID.randomUUID());
         postEntity.setPostCreatedTime(new Date());
         postEntity.setPostUpdatedTime(new Date());
+        //setup expected post to add
+        expectedpost = new Post();
+        BeanUtils.copyProperties(postEntity,expectedpost);
+        expectedpost.setUserId(postEntity.getUser().getUserId());
+        expectedpost.setClientId(postEntity.getClient().getClientId());
 
+        //set update
+        newpost = new Post();
+        newpost.setPostId(postEntity.getPostId());
+        newpost.setTags(new HashSet<>(Arrays.asList("newtag")));
+        newpost.setTitle("newtitle");
+        newpost.setContent("newcontent");
+        newPostEntity = new PostEntity();
+        BeanUtils.copyProperties(postEntity,newPostEntity);
+        newPostEntity.setTags(newpost.getTags());
+        newPostEntity.setTitle(newpost.getTitle());
+        newPostEntity.setContent(newpost.getContent());
+        updatePost = new Post();
+        BeanUtils.copyProperties(newPostEntity,updatePost);
+        updatePost.setUserId(newPostEntity.getUser().getUserId());
+        updatePost.setClientId(newPostEntity.getClient().getClientId());
+
+
+    }
+
+    //JUnit Test for addPostsuccess
+    @Test
+    public void testAddPostsuccess() throws Exception {
         // when
-        when(postrepository.save(Mockito.any(PostEntity.class))).thenReturn(postEntity);
-        when(clientRepository.existsByClientId(Mockito.any())).thenReturn(true);
+        when(userRepository.findByUserId(post.getUserId())).thenReturn(user);
+        when(clientRepository.existsByClientId(post.getClientId())).thenReturn(true);
+        when(postRepository.save(Mockito.any(PostEntity.class))).thenReturn(postEntity);
         //test
         Post addedpost = postserviceimpl.addPost(post);
         //assertion
-        assertNotNull(addedpost);
-        assertEquals(postEntity.getPostId(),addedpost.getPostId());
-        assertEquals(postEntity.getPostCreatedTime(),addedpost.getPostCreatedTime());
-        assertEquals(postEntity.getPostUpdatedTime(),addedpost.getPostUpdatedTime());
-        assertEquals(post.getTags(),addedpost.getTags());
-        assertEquals(post.getTitle(),addedpost.getTitle());
-        assertEquals(post.getContent(),addedpost.getContent());
-        System.out.println(addedpost);
+        assertEquals(expectedpost,addedpost);
+    }
+    /*
+    //JUnit Test for addPostInvalidClient
+    @Test
+    public void testAddPostInvalidClient() throws Exception {
+
+        NullPointerException e = new NullPointerException();
+        // when
+        when(clientRepository.existsByClientId(post.getClientId())).thenReturn(false);
+        when(userRepository.findByUserId(post.getUserId())).thenReturn(user);
+        when(postRepository.save(Mockito.any(PostEntity.class))).thenReturn(postEntity);
+        //assertion
+
+        Exception exception = assertThrows(Exception.class, () ->
+                postserviceimpl.addPost(post));
+
+        assertEquals("Could not save Post: " + e, exception.getMessage());
+
+    }
+    */
+
+    //JUnit Test for getPostByIdsuccess
+    @Test
+    public void testgetPostByIdsuccess() throws Exception {
+        // when
+        when(postRepository.findByPostId(post.getPostId())).thenReturn(postEntity);
+        //test
+        Post foundpost = postserviceimpl.getPostById(post.getPostId());
+        //assertion
+        assertEquals(expectedpost,foundpost);
     }
 
-    @DisplayName("JUnit Test for getPostById")
+    //JUnit Test for getPostByIdNotFound
     @Test
-    public void testgetPostById() throws Exception {
-        //given, statement
-        UUID id=UUID.randomUUID();
-        Set<String> tag = (new HashSet<>(Arrays.asList("tag2")));
-        String title = "Title2";
-        String content = "Content2";
-        Date creattime = new Date();
-        Date updatetime = new Date();
-        PostEntity postEntity = new PostEntity(id,null,title,content,tag,null,creattime,updatetime);
-        Optional<PostEntity> optionalPostEntity = Optional.of(postEntity);
-
+    public void testgetPostByIdNotFound() throws Exception {
+        NullPointerException e = new NullPointerException();
         // when
-        when(postrepository.findByPostId(Mockito.any(UUID.class))).thenReturn(optionalPostEntity);
-        //test
-        Optional<Post> foundpost = postserviceimpl.getPostById(id);
+        when(postRepository.findByPostId(post.getPostId())).thenThrow(e);
 
         //assertion
-        assertTrue(foundpost.isPresent());
-        assertEquals(optionalPostEntity.get().getPostId(),foundpost.get().getPostId());
-        assertEquals(optionalPostEntity.get().getTitle(),foundpost.get().getTitle());
-        assertEquals(optionalPostEntity.get().getContent(),foundpost.get().getContent());
-        assertEquals(optionalPostEntity.get().getPostCreatedTime(),foundpost.get().getPostCreatedTime());
-        assertEquals(optionalPostEntity.get().getPostUpdatedTime(),foundpost.get().getPostUpdatedTime());
+        Exception exception = assertThrows(Exception.class, () ->
+                postserviceimpl.getPostById(post.getPostId()));
+
+        assertEquals("Could not find postId: " + e, exception.getMessage());
+
     }
 
-    @DisplayName("JUnit Test for updatePostById")
+    //JUnit Test for updatePostByIdsuccess
     @Test
-    public void testUpdatePostById() throws Exception {
-        //setup
-        UUID postid = UUID.randomUUID();
-        Post post =new Post(null,new HashSet<>(Arrays.asList("tag1")),"Title1","Content1",null,null );
-        PostEntity postEntity = new PostEntity();
-        postEntity.setPostId(postid);
-        postEntity.setPostCreatedTime(new Date());
-        postEntity.setPostUpdatedTime(new Date());
-        Optional<PostEntity> optionalPostEntity = Optional.of(postEntity);
-        PostEntity update = postEntity;
-        update.setTags(post.getTags());
-        update.setTitle(post.getTitle());
-        update.setContent(post.getContent());
+    public void testUpdatePostByIdsuccess() throws Exception {
+
         // when
-        when(postrepository.findByPostId(Mockito.any(UUID.class))).thenReturn(optionalPostEntity);
-        when(postrepository.save(Mockito.any(PostEntity.class))).thenReturn(update);
+        when(postRepository.findByPostId(Mockito.any(UUID.class))).thenReturn(postEntity);
+        when(postRepository.save(Mockito.any(PostEntity.class))).thenReturn(newPostEntity);
         //test
-        Optional<Post> updatedpost = postserviceimpl.updatePostById(postid,post);
+        Post updatedpost = postserviceimpl.updatePostById(newpost.getPostId(),newpost);
 
         //assertion
-        assertTrue(updatedpost.isPresent());
-        assertEquals(update.getPostId(),updatedpost.get().getPostId());
-        assertEquals(update.getTags(),updatedpost.get().getTags());
-        assertEquals(update.getTitle(),updatedpost.get().getTitle());
-        assertEquals(update.getPostCreatedTime(),updatedpost.get().getPostCreatedTime());
-        assertEquals(update.getPostUpdatedTime(),updatedpost.get().getPostUpdatedTime());
-        System.out.println(updatedpost);
-    }
-    
-    @DisplayName("JUnit Test for deletePostById")
-    @Test
-    public void testDeletePostById() throws Exception {
-        //setup
+        assertEquals(updatePost,updatedpost);
 
-        UUID id=UUID.randomUUID();
-        Set<String> tag = (new HashSet<>(Arrays.asList("tag2")));
-        String title = "Title2";
-        String content = "Content2";
-        Date createtime = new Date();
-        Date updatetime = new Date();
-        PostEntity postEntity = new PostEntity(id,null,title,content,tag,null,createtime,updatetime);
-        Post post = new Post();
+    }
+
+    //JUnit Test for updatePostByIdFailed
+    @Test
+    public void testUpdatePostByIdFailed() throws Exception {
+
+        NullPointerException e = new NullPointerException();
+        // when
+        when(postRepository.findByPostId(newpost.getPostId())).thenThrow(e);
+
+        //assertion
+        Exception exception = assertThrows(Exception.class, () ->
+                postserviceimpl.updatePostById(newpost.getPostId(),newpost));
+
+        assertEquals("Could not update Post: " + e, exception.getMessage());
+
+    }
+
+    //JUnit Test for deletePostById
+    @Test
+    public void testDeletePostById(){
 
         // when true
-        when(postrepository.deletePostEntityByPostId(id)).thenReturn(1);
+        when(postRepository.deletePostEntityByPostId(post.getPostId())).thenReturn(1);
 
-        Boolean testdeletetrue = postserviceimpl.deletePostById(id);
-        assertTrue(testdeletetrue);
+        Boolean deletetrue = postserviceimpl.deletePostById(post.getPostId());
+        assertTrue(deletetrue);
         // when false
-        when(postrepository.deletePostEntityByPostId(id)).thenReturn(0);
+        when(postRepository.deletePostEntityByPostId(post.getPostId())).thenReturn(0);
 
-        Boolean testdeletefalse = postserviceimpl.deletePostById(id);
-        assertFalse(testdeletefalse);
+        Boolean deletefalse = postserviceimpl.deletePostById(post.getPostId());
+        assertFalse(deletefalse);
     }
+
 }
 

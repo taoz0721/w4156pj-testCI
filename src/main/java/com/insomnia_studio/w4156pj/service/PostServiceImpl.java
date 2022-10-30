@@ -42,11 +42,19 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post getPostById(UUID postId) {
-        PostEntity postEntity = postEntityRepository.findByPostId(postId);
-        Post post = new Post();
-        BeanUtils.copyProperties(postEntity, post);
-        return post;
+    public Post getPostById(UUID postId) throws Exception {
+
+        try{
+            PostEntity postEntity = postEntityRepository.findByPostId(postId);
+            Post post = new Post();
+            BeanUtils.copyProperties(postEntity, post);
+            post.setUserId(postEntity.getUser().getUserId());
+            post.setClientId(postEntity.getClient().getClientId());
+            return post;
+        }
+        catch (Exception e){
+            throw new Exception("Could not find postId: " + e);
+        }
     }
 
     @Override
@@ -58,6 +66,8 @@ public class PostServiceImpl implements PostService {
             postEntity.setTags(post.getTags());
             postEntity = postEntityRepository.save(postEntity);
             BeanUtils.copyProperties(postEntity, post);
+            post.setUserId(postEntity.getUser().getUserId());
+            post.setClientId(postEntity.getClient().getClientId());
         } catch (Exception e) {
             throw new Exception("Could not update Post: " + e);
         }
