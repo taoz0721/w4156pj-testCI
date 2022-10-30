@@ -13,6 +13,6 @@ public interface PostService {
 
     Post updatePostById(UUID postId, Post post) throws Exception;
 
-    Boolean deletePostById(UUID postId);
+    Boolean deletePostById(UUID postId, Post post);
 
 }

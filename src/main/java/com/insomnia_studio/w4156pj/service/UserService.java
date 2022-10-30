@@ -11,7 +11,7 @@ public interface UserService {
 
     User updateUserById(String userId, User user);
 
-    Boolean deleteUserById(String userId);
+    Boolean deleteUserById(String userId, User user);
 
     List<User> addFollower(String userId, String followerId);
 

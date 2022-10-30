@@ -5,13 +5,12 @@ import com.insomnia_studio.w4156pj.entity.ClientEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.entity.UserEntity;
 import com.insomnia_studio.w4156pj.model.Post;
-import com.insomnia_studio.w4156pj.repository.ClientRepository;
+import com.insomnia_studio.w4156pj.repository.ClientEntityRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 
 import com.insomnia_studio.w4156pj.repository.UserEntityRepository;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +31,7 @@ public class PostServiceImplTest {
     @Mock
     private PostEntityRepository postRepository;
     @Mock
-    private ClientRepository clientRepository;
+    private ClientEntityRepository clientEntityRepository;
     @Mock
     private UserEntityRepository userRepository;
 
@@ -103,7 +102,7 @@ public class PostServiceImplTest {
     public void testAddPostsuccess() throws Exception {
         // when
         when(userRepository.findByUserId(post.getUserId())).thenReturn(user);
-        when(clientRepository.existsByClientId(post.getClientId())).thenReturn(true);
+        when(clientEntityRepository.existsByClientId(post.getClientId())).thenReturn(true);
         when(postRepository.save(Mockito.any(PostEntity.class))).thenReturn(postEntity);
         //test
         Post addedpost = postserviceimpl.addPost(post);

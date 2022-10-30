@@ -38,9 +38,9 @@ public class PostController {
 
     @DeleteMapping("/{postId}")
     @Transactional
-    public Map<String, Boolean> deletePostByPostId(@PathVariable UUID postId) {
+    public Map<String, Boolean> deletePostByPostId(@PathVariable UUID postId, @RequestBody Post post) {
         Map<String, Boolean> response = new HashMap<>();
-        boolean is_deleted = (postService.deletePostById(postId));
+        boolean is_deleted = (postService.deletePostById(postId, post));
         response.put("Deleted", is_deleted);
         return response;
     }

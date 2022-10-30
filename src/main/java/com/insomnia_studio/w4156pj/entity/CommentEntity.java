@@ -12,6 +12,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
@@ -30,25 +31,41 @@ public class CommentEntity implements Serializable {
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID commentId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId")
 //    @JsonManagedReference
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="clientId")
     private ClientEntity client;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
 //    @JsonManagedReference
     @JoinColumn(name="postId")
     private PostEntity post;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private CommentEntity parentComment;
 
     @OneToMany(mappedBy = "parentComment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<CommentEntity> childComments = new HashSet<>();
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date commentCreatedTime;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date commentUpdatedTime;
+
+    @PrePersist
+    protected void onCreate() {
+        commentCreatedTime = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        commentUpdatedTime = new Date();
+    }
 
     private Integer LikesNum;
 

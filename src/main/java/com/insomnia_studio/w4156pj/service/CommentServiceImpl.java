@@ -1,12 +1,12 @@
 package com.insomnia_studio.w4156pj.service;
 
+import com.insomnia_studio.w4156pj.entity.ClientEntity;
 import com.insomnia_studio.w4156pj.entity.CommentEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.entity.UserEntity;
 import com.insomnia_studio.w4156pj.model.Comment;
-import com.insomnia_studio.w4156pj.model.Post;
-import com.insomnia_studio.w4156pj.repository.ClientRepository;
-import com.insomnia_studio.w4156pj.repository.CommentRepository;
+import com.insomnia_studio.w4156pj.repository.ClientEntityRepository;
+import com.insomnia_studio.w4156pj.repository.CommentEntityRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 import com.insomnia_studio.w4156pj.repository.UserEntityRepository;
 import org.springframework.beans.BeanUtils;
@@ -18,16 +18,16 @@ import java.util.UUID;
 @Service
 public class CommentServiceImpl implements CommentService{
 
-    private CommentRepository commentRepository;
+    private CommentEntityRepository commentEntityRepository;
     private PostEntityRepository postEntityRepository;
-    private ClientRepository clientRepository;
+    private ClientEntityRepository clientEntityRepository;
 
     private UserEntityRepository userEntityRepository;
 
-    public CommentServiceImpl(CommentRepository commentRepository, PostEntityRepository postEntityRepository, ClientRepository clientRepository, UserEntityRepository userEntityRepository) {
-        this.commentRepository = commentRepository;
+    public CommentServiceImpl(CommentEntityRepository commentEntityRepository, PostEntityRepository postEntityRepository, ClientEntityRepository clientEntityRepository, UserEntityRepository userEntityRepository) {
+        this.commentEntityRepository = commentEntityRepository;
         this.postEntityRepository = postEntityRepository;
-        this.clientRepository = clientRepository;
+        this.clientEntityRepository = clientEntityRepository;
         this.userEntityRepository = userEntityRepository;
     }
 
@@ -36,19 +36,20 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public Comment addComment(Comment comment, UUID postId) {
         if (postEntityRepository.existsByPostId(postId) &&
-                comment.getClientId() != null && clientRepository.existsByClientId(comment.getClientId())) {
-            //if (postEntityRepository.existsByPostId(comment.getPostId())) {
+                comment.getClientId() != null && clientEntityRepository.existsByClientId(comment.getClientId())) {
             CommentEntity commentEntity = new CommentEntity();
             BeanUtils.copyProperties(comment, commentEntity);
-            PostEntity post = postEntityRepository.findByPostId(postId);
-            commentEntity.setPost(post);
-            UserEntity user = userEntityRepository.findByUserId(comment.getUserId());
-            commentEntity.setUser(user);
-            commentEntity = commentRepository.save(commentEntity);
+            PostEntity postEntity = postEntityRepository.findByPostId(postId);
+            commentEntity.setPost(postEntity);
+            UserEntity userEntity = userEntityRepository.findByUserId(comment.getUserId());
+            commentEntity.setUser(userEntity);
+            ClientEntity clientEntity = clientEntityRepository.findByClientId(comment.getClientId());
+            commentEntity.setClient(clientEntity);
+            commentEntity = commentEntityRepository.save(commentEntity);
             comment.setCommentId(commentEntity.getCommentId());
+
         }
         else {
-            //return null?
             return null;
         }
 
@@ -57,7 +58,7 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public Comment getCommentById(UUID commentId) {
-        Optional<CommentEntity> commentEntity = commentRepository.findByCommentId(commentId);
+        Optional<CommentEntity> commentEntity = commentEntityRepository.findByCommentId(commentId);
         if (commentEntity.isEmpty()) {
             return null;
         }
@@ -69,13 +70,18 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Boolean deleteCommentById(UUID commentId) {
-        Boolean is_deleted = (commentRepository.deleteCommentEntityByCommentId(commentId) == 1);
-        return is_deleted;
+    public Comment updateCommentById(UUID commentId, Comment comment) {
+        return null;
     }
 
-    public void setCommentRepository(CommentRepository commentRepository) {
-        this.commentRepository = commentRepository;
+    @Override
+    public Boolean deleteCommentById(UUID commentId, Comment comment) {
+        return null;
+    }
+
+
+    public void setCommentRepository(CommentEntityRepository commentEntityRepository) {
+        this.commentEntityRepository = commentEntityRepository;
     }
 
     public void setPostEntityRepository(PostEntityRepository postEntityRepository) {
@@ -86,8 +92,8 @@ public class CommentServiceImpl implements CommentService{
         this.userEntityRepository = userEntityRepository;
     }
 
-    public void setClientRepository(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
+    public void setClientRepository(ClientEntityRepository clientEntityRepository) {
+        this.clientEntityRepository = clientEntityRepository;
     }
 }
 

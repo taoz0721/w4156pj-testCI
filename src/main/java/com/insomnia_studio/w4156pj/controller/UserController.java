@@ -31,9 +31,9 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public Map<String, Boolean> deleteUser(@PathVariable String userId) {
+    public Map<String, Boolean> deleteUser(@PathVariable String userId, @RequestBody User user) {
         Map<String, Boolean> response = new HashMap<>();
-        response.put("Deleted: ", userService.deleteUserById(userId));
+        response.put("Deleted: ", userService.deleteUserById(userId, user));
         return response;
     }
 

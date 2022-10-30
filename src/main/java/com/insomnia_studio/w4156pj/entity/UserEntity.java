@@ -27,6 +27,10 @@ public class UserEntity {
 
     private String lastName;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "clientId")
+    private ClientEntity client;
+
     @ElementCollection
     @CollectionTable(name = "user_followers")
     private Set<String> followers = new HashSet<>();
@@ -43,11 +47,11 @@ public class UserEntity {
         userCreatedTime = new Date();
     }
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @JsonBackReference(value = "user-post")
     private Set<PostEntity> posts = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //    @JsonBackReference(value = "user-comment")
     private Set<CommentEntity> comments = new HashSet<>();
 

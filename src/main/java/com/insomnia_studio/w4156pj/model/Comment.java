@@ -11,6 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.UUID;
 @Data
 @Builder
@@ -31,6 +32,10 @@ public class Comment {
 
     private String Content;
 
+    private Date commentCreatedTime;
+
+    private Date commentUpdatedTime;
+
     public Comment(String userId, UUID postId, Integer likesNum, Integer dislikesNum, String content) {
         this.userId = userId;
         this.postId = postId;
@@ -38,6 +43,5 @@ public class Comment {
         this.dislikesNum = dislikesNum;
         Content = content;
     }
-
 
 }

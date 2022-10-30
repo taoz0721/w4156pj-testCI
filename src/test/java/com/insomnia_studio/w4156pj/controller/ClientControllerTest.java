@@ -1,8 +1,6 @@
 package com.insomnia_studio.w4156pj.controller;
 
 import com.insomnia_studio.w4156pj.model.Client;
-import com.insomnia_studio.w4156pj.repository.CommentRepository;
-import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 import com.insomnia_studio.w4156pj.service.ClientService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

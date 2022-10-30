@@ -46,7 +46,7 @@ public class PostEntity {
     private Set<String> tags = new HashSet<>();
 
     @OneToMany(mappedBy = "post",cascade = CascadeType.ALL)
-    @JsonBackReference(value="comment-post")
+//    @JsonBackReference(value="comment-post")
     private Set<CommentEntity> comments = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)

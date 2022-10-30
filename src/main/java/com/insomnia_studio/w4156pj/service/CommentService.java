@@ -11,5 +11,7 @@ public interface CommentService {
 
     Comment getCommentById(UUID commentId);
 
-    Boolean deleteCommentById(UUID commentId);
+    Comment updateCommentById(UUID commentId, Comment comment);
+
+    Boolean deleteCommentById(UUID commentId, Comment comment);
 }

@@ -27,6 +27,7 @@ public class Post {
     private Date postUpdatedTime;
 
     // Used for the test in the first iteration
+
     public Post(UUID postId, Set<String> tags, String userID,String title, String content, Date postCreatedTime, Date postUpdatedTime) {
         this.postId = postId;
         this.userId = userID;
