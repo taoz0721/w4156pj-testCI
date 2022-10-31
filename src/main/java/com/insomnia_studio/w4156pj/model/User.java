@@ -1,5 +1,6 @@
 package com.insomnia_studio.w4156pj.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.insomnia_studio.w4156pj.entity.ClientEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class User {
     private Set<String> followers;
     private Set<String> followedBy;
     private Date userCreatedTime;
-    private Set<PostEntity> posts;
+
 
     public User(String userId, String firstName, String lastName) {
         this.userId = userId;

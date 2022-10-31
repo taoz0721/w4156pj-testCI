@@ -33,7 +33,6 @@ public class CommentEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId")
-//    @JsonManagedReference
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,7 +40,6 @@ public class CommentEntity implements Serializable {
     private ClientEntity client;
 
     @ManyToOne(fetch = FetchType.LAZY)
-//    @JsonManagedReference
     @JoinColumn(name="postId")
     private PostEntity post;
 

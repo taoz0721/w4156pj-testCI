@@ -28,12 +28,12 @@ public class PostEntity {
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID postId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-//    @JsonBackReference(value = "user-post")
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
+    @JsonBackReference
     private UserEntity user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "clientId")
     private ClientEntity client;
 

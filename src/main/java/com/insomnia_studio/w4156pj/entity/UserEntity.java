@@ -1,6 +1,7 @@
 package com.insomnia_studio.w4156pj.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,12 +49,11 @@ public class UserEntity {
     }
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonBackReference(value = "user-post")
-    private Set<PostEntity> posts = new HashSet<>();
+    @JsonIgnore
+    private Set<PostEntity> posts;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    @JsonBackReference(value = "user-comment")
-    private Set<CommentEntity> comments = new HashSet<>();
+    private Set<CommentEntity> comments;
 
     public void addPost(PostEntity postEntity) {
         posts.add(postEntity);
