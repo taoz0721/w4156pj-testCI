@@ -71,8 +71,9 @@ Client:
 1. POST http://localhost:8080/api/v1/client/register
 
 Request body example:
+
 {
-    "clientName": "clienttest"
+"clientName": "clienttest"
 }
 
 Comment:
@@ -80,31 +81,39 @@ Comment:
 
 2. DELETE http://localhost:8080/api/v1/comment/{{commentId}}
 
-3. POST http://localhost:8080/api/v1/post/{{postId}}/comment/add
+3. POST http://localhost:8080/api/v1/post/{{postId}}/comment
 
 Request body example:
+
 {
-   "post": {
-   "postId": "099e5331-b079-4a45-9f76-305efd6498c9",
-   "tags": ["tag1"],
-   "title": "Hello",
-   "content": "Hello World",
-   "postCreatedTime": "2022-10-24T20:39:48.860+00:00",
-   "postUpdatedTime": null
-   },
-   "LikesNum": 5,
-   "dislikesNum": 0,
-   "content": "cotent."
+"clientId": "7ee7059a-b498-47dd-a8a7-2517eeb72100",
+"userId": "usertest",
+"postId": "53242f3a-0d56-47e7-82cc-dccdf497b322",
+"content": "commenttest"
+}
+
+4. PUT http://localhost:8080/api/v1/comment/{{commentId}}
+
+Request body example:
+
+{
+"clientId": "7ee7059a-b498-47dd-a8a7-2517eeb72100",
+"userId": "usertest",
+"postId": "53242f3a-0d56-47e7-82cc-dccdf497b322",
+"content": "updatecommenttest"
 }
 
 Post:
 1. POST http://localhost:8080/api/v1/post
 
 Request body example:
+
 {
-    "tags": ["tag1"],
-    "title": "titletest",
-    "content": "content"
+"clientId": "7ee7059a-b498-47dd-a8a7-2517eeb72100",
+"userId": "usertest",
+"tags": ["tag1"],
+"title": "titletest",
+"content": "posttest"
 }
 
 2. GET http://localhost:8080/api/v1/post/{{postId}}
@@ -112,10 +121,13 @@ Request body example:
 3. PUT http://localhost:8080/api/v1/post/{{postId}}
 
 Request body example:
+
 {
-   "tags": ["tag2"],
-   "title": "titleput",
-   "content": "content"
+"clientId": "7ee7059a-b498-47dd-a8a7-2517eeb72100",
+"userId": "usertest",
+"tags": ["tag1"],
+"title": "puttest",
+"content": "updateposttest"
 }
 
 4. DELETE http://localhost:8080/api/v1/post/{{postId}}
@@ -124,10 +136,12 @@ User:
 1. POST http://localhost:8080/api/v1/user
 
 Request body example:
+
 {
-   "userId": "1",
-   "firstName": "Software",
-   "lastName": "Engineer"
+"userId": "usertest",
+"clientId": "ee865a46-bfa4-473c-831f-3be2c507bb6b",
+"firstName": "Software",
+"lastName": "Engineer"
 }
 
 2. GET http://localhost:8080/api/v1/user/{{userId}}
@@ -135,13 +149,20 @@ Request body example:
 3. PUT http://localhost:8080/api/v1/user/{{userId}}
 
 Request body example:
+
 {
-   "userId": "1",
-   "firstName": "Software",
-   "lastName": "Engineering"
+"clientId": "ee865a46-bfa4-473c-831f-3be2c507bb6b",
+"firstName": "Junior Software",
+"lastName": "Engineer"
 }
 
 4. DELETE http://localhost:8080/api/v1/user/{{userId}}
+
+Request body example:
+
+{
+"clientId": "ee865a46-bfa4-473c-831f-3be2c507bb6b"
+}
 
 5. PUT http://localhost:8080/api/v1/user/{{userId}}/addFollower/{{followerId}}
 
