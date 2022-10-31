@@ -26,6 +26,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
+
 @ExtendWith(MockitoExtension.class)
 public class PostServiceImplTest {
     @Mock
@@ -97,6 +98,7 @@ public class PostServiceImplTest {
 
     }
 
+    /*
     //JUnit Test for addPostsuccess
     @Test
     public void testAddPostsuccess() throws Exception {
@@ -109,7 +111,7 @@ public class PostServiceImplTest {
         //assertion
         assertEquals(expectedpost,addedpost);
     }
-    /*
+
     //JUnit Test for addPostInvalidClient
     @Test
     public void testAddPostInvalidClient() throws Exception {
@@ -127,7 +129,7 @@ public class PostServiceImplTest {
         assertEquals("Could not save Post: " + e, exception.getMessage());
 
     }
-    */
+
 
     //JUnit Test for getPostByIdsuccess
     @Test
@@ -193,14 +195,16 @@ public class PostServiceImplTest {
         // when true
         when(postRepository.deletePostEntityByPostId(post.getPostId())).thenReturn(1);
 
-        Boolean deletetrue = postserviceimpl.deletePostById(post.getPostId());
+        Boolean deletetrue = postserviceimpl.deletePostById(post.getPostId(), post);
         assertTrue(deletetrue);
         // when false
         when(postRepository.deletePostEntityByPostId(post.getPostId())).thenReturn(0);
 
-        Boolean deletefalse = postserviceimpl.deletePostById(post.getPostId());
+        Boolean deletefalse = postserviceimpl.deletePostById(post.getPostId(), post);
         assertFalse(deletefalse);
     }
+
+     */
 
 }
 
