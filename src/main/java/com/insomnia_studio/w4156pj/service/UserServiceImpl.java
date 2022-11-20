@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
             return responseUser;
         }
         else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
         }
     }
 
@@ -69,7 +69,7 @@ public class UserServiceImpl implements UserService {
             BeanUtils.copyProperties(userEntity, user);
             return user;
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
         }
     }
 
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
             Boolean is_deleted = (userEntityRepository.deleteUserEntityByUserId(userId) == 1);
             return is_deleted;
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
         }
     }
 
@@ -105,14 +105,14 @@ public class UserServiceImpl implements UserService {
                 userEntity.addFollower(followerId);
             }
             catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
             }
         } else{
             try {
                 userEntity.removeFollower(followerId);
             }
             catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
             }
         }
         userEntity = userEntityRepository.save(userEntity);
@@ -125,14 +125,14 @@ public class UserServiceImpl implements UserService {
                 userEntity.addFollowedBy(userId);
             }
             catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
             }
         } else {
             try {
                 userEntity.removeFollowBy(userId);
             }
             catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
             }
         }
         userEntity = userEntityRepository.save(userEntity);
