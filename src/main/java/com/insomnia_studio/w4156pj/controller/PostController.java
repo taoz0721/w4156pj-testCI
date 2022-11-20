@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -38,7 +37,7 @@ public class PostController {
 
     @DeleteMapping("/{postId}")
     @Transactional
-    public Map<String, Boolean> deletePostByPostId(@PathVariable UUID postId, @RequestBody Post post) {
+    public Map<String, Boolean> deletePostByPostId(@PathVariable UUID postId, @RequestBody Post post) throws Exception {
         Map<String, Boolean> response = new HashMap<>();
         boolean is_deleted = (postService.deletePostById(postId, post));
         response.put("Deleted", is_deleted);

@@ -9,7 +9,9 @@ import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
 import com.insomnia_studio.w4156pj.repository.UserEntityRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
 
@@ -22,10 +24,9 @@ public class PostServiceImpl implements PostService {
     private UserEntityRepository userEntityRepository;
 
     @Override
-    public Post addPost(Post post) throws Exception {
-        try {
-            // TO BE FIXED: should return error message if client is not valid
-            if (post.getClientId() != null && clientEntityRepository.existsByClientId(post.getClientId())) {
+    public Post addPost(Post post) throws ResponseStatusException {
+        if (post.getClientId() != null && clientEntityRepository.existsByClientId(post.getClientId())) {
+            try {
                 PostEntity postEntity = new PostEntity();
                 BeanUtils.copyProperties(post, postEntity);
                 UserEntity userEntity = userEntityRepository.findByUserId(post.getUserId());
@@ -37,17 +38,17 @@ public class PostServiceImpl implements PostService {
                 post.setPostCreatedTime(postEntity.getPostCreatedTime());
                 post.setPostUpdatedTime(postEntity.getPostUpdatedTime());
                 return post;
-            } else {
-                return null;
             }
-        } catch (Exception e) {
-            throw new Exception("Could not save Post: " + e);
+            catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Post Save Failed");
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
         }
     }
 
     @Override
-    public Post getPostById(UUID postId) throws Exception {
-
+    public Post getPostById(UUID postId) throws ResponseStatusException {
         try{
             PostEntity postEntity = postEntityRepository.findByPostId(postId);
             Post post = new Post();
@@ -57,14 +58,15 @@ public class PostServiceImpl implements PostService {
             return post;
         }
         catch (Exception e){
-            throw new Exception("Could not find postId: " + e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post ID not found", e);
         }
     }
 
     @Override
-    public Post updatePostById(UUID postId, Post post) throws Exception {
-        try {
-            if (post.getClientId() != null && clientEntityRepository.existsByClientId(post.getClientId())) {
+    public Post updatePostById(UUID postId, Post post) throws ResponseStatusException {
+
+        if (post.getClientId() != null && clientEntityRepository.existsByClientId(post.getClientId())) {
+            try {
                 PostEntity postEntity = postEntityRepository.findByPostId(postId);
                 postEntity.setTitle(post.getTitle());
                 postEntity.setContent(post.getContent());
@@ -74,21 +76,28 @@ public class PostServiceImpl implements PostService {
                 post.setUserId(postEntity.getUser().getUserId());
                 post.setClientId(postEntity.getClient().getClientId());
                 return post;
-            } else {
-                return null;
             }
-        } catch (Exception e) {
-            throw new Exception("Could not update Post: " + e);
+            catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post ID not found", e);
+            }
+        } else {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
         }
+
     }
 
     @Override
-    public Boolean deletePostById(UUID postId, Post post) {
+    public Boolean deletePostById(UUID postId, Post post) throws ResponseStatusException{
         if (post.getClientId() != null && clientEntityRepository.existsByClientId(post.getClientId())) {
             Boolean is_deleted = (postEntityRepository.deletePostEntityByPostId(postId) == 1);
-            return is_deleted;
+            if (!is_deleted){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "comment ID not found");
+            }
+            else {
+                return is_deleted;
+            }
         } else {
-            return false;
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
         }
     }
 
