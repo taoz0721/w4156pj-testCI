@@ -66,10 +66,12 @@ Test:
 ## Guidance for checking
 
 ### HTTP response
-1. **[200 OK]** for success requests
+1. **[200 OK]** for success requests.
 2. **[404 Not Found]** for GET, PUT, or DELETE comment, post and user with invalid comment, post and user ID.
 3. **[403 Forbidden]** for any requests with invalid client ID.
-
+4. **[422 Unprocessable Entity]** for POST user without entering user ID in the request body.
+5. **[404 Not Found]** for POST comment with invalid post ID.
+6. **[400 Bad Request]** for using incorrect format when sending requests.
 ### API Entry Points
 
 Client:
