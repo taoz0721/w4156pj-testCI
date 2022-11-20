@@ -63,9 +63,14 @@ Test:
 		b. in the Postman, send example requests to the endpoints specified in the next section  
 		
 
+## Guidance for checking
 
+### HTTP response
+1. **[200 OK]** for success requests
+2. **[404 Not Found]** for GET, PUT, or DELETE comment, post and user with invalid comment, post and user ID.
+3. **[403 Forbidden]** for any requests with invalid client ID.
 
-## API Entry Points
+### API Entry Points
 
 Client:
 1. POST http://localhost:8080/api/v1/client/register

@@ -20,7 +20,7 @@ public class CommentController {
 
     //create
     @PostMapping("/post/{postId}/comment")
-    public Comment addComment(@RequestBody Comment comment, @PathVariable UUID postId){
+    public Comment addComment(@RequestBody Comment comment, @PathVariable UUID postId) throws Exception{
         return commentService.addComment(comment, postId);
     }
 
@@ -39,7 +39,7 @@ public class CommentController {
     //delete
     @DeleteMapping("/comment/{commentId}")
     @Transactional
-    public Map<String, Boolean> deleteCommentByCommentId(@PathVariable UUID commentId, @RequestBody Comment comment) {
+    public Map<String, Boolean> deleteCommentByCommentId(@PathVariable UUID commentId, @RequestBody Comment comment) throws Exception {
         Map<String, Boolean> response = new HashMap<>();
         boolean is_deleted = (commentService.deleteCommentById(commentId, comment));
         response.put("Deleted", is_deleted);
