@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class W4156nosecurityApplication {
+public class W4156Application {
 
 	public static void main(String[] args) {
-		SpringApplication.run(W4156nosecurityApplication.class, args);
+		SpringApplication.run(W4156Application.class, args);
 	}
 
 }

@@ -8,7 +8,7 @@ import java.util.UUID;
 public interface PostService {
     Post addPost(Post post) throws Exception;
 
-    Post getPostById(UUID postId) throws Exception;
+    Post getPostById(UUID postId, Post post) throws Exception;
 
     Post updatePostById(UUID postId, Post post) throws Exception;
 

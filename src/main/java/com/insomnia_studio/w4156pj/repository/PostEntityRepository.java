@@ -14,4 +14,6 @@ public interface PostEntityRepository extends JpaRepository<PostEntity, UUID> {
     Integer deletePostEntityByPostId(UUID id);
 
     boolean existsByPostId(UUID id);
+
+
 }

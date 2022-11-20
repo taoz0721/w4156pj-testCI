@@ -19,7 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private String userId;
+    private UUID userId;
 
     private UUID clientId;
     private String firstName;
@@ -29,7 +29,7 @@ public class User {
     private Date userCreatedTime;
 
 
-    public User(String userId, String firstName, String lastName) {
+    public User(UUID userId, String firstName, String lastName) {
         this.userId = userId;
         this.firstName = firstName;
         this.lastName = lastName;

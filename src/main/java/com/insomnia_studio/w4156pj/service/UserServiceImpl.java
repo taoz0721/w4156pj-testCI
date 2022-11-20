@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -24,31 +25,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public User addUser(User user) throws ResponseStatusException {
         if (user.getClientId() != null && clientEntityRepository.existsByClientId(user.getClientId())) {
-            try {
-                UserEntity userEntity = new UserEntity();
-                BeanUtils.copyProperties(user, userEntity);
-                ClientEntity clientEntity = clientEntityRepository.findByClientId(user.getClientId());
-                userEntity.setClient(clientEntity);
-                userEntity = userEntityRepository.save(userEntity);
-                user.setUserCreatedTime(userEntity.getUserCreatedTime());
-                return user;
-            }
-            catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing User ID");
-            }
+            UserEntity userEntity = new UserEntity();
+            BeanUtils.copyProperties(user, userEntity);
+            ClientEntity clientEntity = clientEntityRepository.findByClientId(user.getClientId());
+            userEntity.setClient(clientEntity);
+            userEntity = userEntityRepository.save(userEntity);
+            user.setUserCreatedTime(userEntity.getUserCreatedTime());
+            user.setUserId(userEntity.getUserId());
+            return user;
         } else {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
         }
     }
 
     @Override
-    public User getUser(String userId) throws ResponseStatusException {
+    public User getUser(UUID userId, User user) throws ResponseStatusException {
         UserEntity userEntity = userEntityRepository.findByUserId(userId);
         if (userEntity != null) {
-            User user = new User();
-            BeanUtils.copyProperties(userEntity, user);
-            user.setClientId(userEntity.getClient().getClientId());
-            return user;
+            if (userEntity.getClient().getClientId().compareTo(user.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
+            }
+            User responseUser = new User();
+            BeanUtils.copyProperties(userEntity, responseUser);
+            responseUser.setClientId(userEntity.getClient().getClientId());
+            return responseUser;
         }
         else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
@@ -56,52 +56,49 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUserById(String userId, User user) throws ResponseStatusException {
+    public User updateUserById(UUID userId, User user) throws ResponseStatusException {
         //need_TODO: add client authentication or other client distinguishing method
-        if (user.getClientId() != null && clientEntityRepository.existsByClientId(user.getClientId())) {
-            try {
-                UserEntity userEntity = userEntityRepository.findByUserId(userId);
-                userEntity.setFirstName(user.getFirstName());
-                userEntity.setLastName(user.getLastName());
-                userEntity = userEntityRepository.save(userEntity);
-                BeanUtils.copyProperties(userEntity, user);
-                return user;
+        UserEntity userEntity = userEntityRepository.findByUserId(userId);
+        if (userEntity != null) {
+            if (userEntity.getClient().getClientId().compareTo(user.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
             }
-            catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
-            }
+            userEntity.setFirstName(user.getFirstName());
+            userEntity.setLastName(user.getLastName());
+            userEntity = userEntityRepository.save(userEntity);
+            BeanUtils.copyProperties(userEntity, user);
+            return user;
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
         }
     }
 
     @Override
     @Transactional
-    public Boolean deleteUserById(String userId, User user) throws ResponseStatusException {
-        if (user.getClientId() != null && clientEntityRepository.existsByClientId(user.getClientId())) {
+    public Boolean deleteUserById(UUID userId, User user) throws ResponseStatusException {
+        UserEntity userEntity = userEntityRepository.findByUserId(userId);
+        if (userEntity != null) {
+            if (userEntity.getClient().getClientId().compareTo(user.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
+            }
             Boolean is_deleted = (userEntityRepository.deleteUserEntityByUserId(userId) == 1);
-            if (!is_deleted){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
-            }
-            else {
-                return is_deleted;
-            }
+            return is_deleted;
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "user ID not found");
         }
     }
 
     @Override
-    public List<User> addFollower(String userId, String followerId) throws Exception{
+    public List<User> addFollower(UUID userId, UUID followerId) throws Exception{
         return changeFollower(userId, followerId, "add");
     }
 
     @Override
-    public List<User> deleteFollower(String userId, String followerId) throws Exception{
+    public List<User> deleteFollower(UUID userId, UUID followerId) throws Exception{
         return changeFollower(userId, followerId, "remove");
     }
 
-    private List<User> changeFollower(String userId, String followerId, String operation) throws ResponseStatusException {
+    private List<User> changeFollower(UUID userId, UUID followerId, String operation) throws ResponseStatusException {
         UserEntity userEntity = userEntityRepository.findByUserId(userId);
         if (operation == "add") {
             try {

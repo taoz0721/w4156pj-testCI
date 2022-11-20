@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Comment {
     private UUID commentId;
 
-    private String userId;
+    private UUID userId;
 
     private UUID postId;
 
@@ -36,7 +36,7 @@ public class Comment {
 
     private Date commentUpdatedTime;
 
-    public Comment(String userId, UUID postId, Integer likesNum, Integer dislikesNum, String content) {
+    public Comment(UUID userId, UUID postId, Integer likesNum, Integer dislikesNum, String content) {
         this.userId = userId;
         this.postId = postId;
         LikesNum = likesNum;

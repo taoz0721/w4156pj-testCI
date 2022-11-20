@@ -8,10 +8,13 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface UserEntityRepository extends JpaRepository<UserEntity, String> {
-    UserEntity findByUserId(String userId);
+    UserEntity findByUserId(UUID userId);
 
-    Integer deleteUserEntityByUserId(String userId);
+    Integer deleteUserEntityByUserId(UUID userId);
+
+
 }

@@ -3,10 +3,7 @@ package com.insomnia_studio.w4156pj.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -22,7 +19,10 @@ import java.util.*;
 public class UserEntity {
 
     @Id
-    private String userId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    @Type(type="org.hibernate.type.UUIDCharType")
+    private UUID userId;
 
     private String firstName;
 
@@ -34,11 +34,11 @@ public class UserEntity {
 
     @ElementCollection
     @CollectionTable(name = "user_followers")
-    private Set<String> followers = new HashSet<>();
+    private Set<UUID> followers = new HashSet<>();
 
     @ElementCollection
     @CollectionTable(name = "user_followedBy")
-    private Set<String> followedBy = new HashSet<>();
+    private Set<UUID> followedBy = new HashSet<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date userCreatedTime;
@@ -65,19 +65,19 @@ public class UserEntity {
         postEntity.setUser(null);
     }
 
-    public void addFollower(String followId) {
+    public void addFollower(UUID followId) {
         followers.add(followId);
     }
 
-    public void addFollowedBy(String userId) {
+    public void addFollowedBy(UUID userId) {
         followedBy.add(userId);
     }
 
-    public void removeFollower(String followId) {
+    public void removeFollower(UUID followId) {
         followers.remove(followId);
     }
 
-    public void removeFollowBy(String userId) {
+    public void removeFollowBy(UUID userId) {
         followedBy.remove(userId);
     }
 }
