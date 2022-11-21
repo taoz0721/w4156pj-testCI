@@ -31,6 +31,8 @@ public class PostServiceImpl implements PostService {
             UserEntity userEntity = userEntityRepository.findByUserId(post.getUserId());
             if (userEntity == null) {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
+            } else if (userEntity.getClient().getClientId().compareTo(post.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
             }
             postEntity.setUser(userEntity);
             ClientEntity clientEntity = clientEntityRepository.findByClientId(post.getClientId());

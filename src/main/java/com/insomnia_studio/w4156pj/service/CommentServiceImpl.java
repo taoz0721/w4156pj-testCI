@@ -37,85 +37,83 @@ public class CommentServiceImpl implements CommentService{
 
     @Override
     public Comment addComment(Comment comment, UUID postId) throws ResponseStatusException{
-        if (postEntityRepository.existsByPostId(postId)) {
-            if (comment.getClientId() != null && clientEntityRepository.existsByClientId(comment.getClientId())) {
-                CommentEntity commentEntity = new CommentEntity();
-                BeanUtils.copyProperties(comment, commentEntity);
-                PostEntity postEntity = postEntityRepository.findByPostId(postId);
-                commentEntity.setPost(postEntity);
-                UserEntity userEntity = userEntityRepository.findByUserId(comment.getUserId());
-                commentEntity.setUser(userEntity);
-                ClientEntity clientEntity = clientEntityRepository.findByClientId(comment.getClientId());
-                commentEntity.setClient(clientEntity);
-                commentEntity = commentEntityRepository.save(commentEntity);
-                comment.setCommentId(commentEntity.getCommentId());
-                comment.setCommentCreatedTime(commentEntity.getCommentCreatedTime());
-                comment.setCommentUpdatedTime(commentEntity.getCommentUpdatedTime());
-                comment.setPostId(postEntity.getPostId());
-            }
-            else {
+        PostEntity postEntity = postEntityRepository.findByPostId(postId);
+        if (postEntity != null) {
+            if (postEntity.getClient().getClientId().compareTo(comment.getClientId()) != 0) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
             }
-        }
-        else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "post ID not found");
+            CommentEntity commentEntity = new CommentEntity();
+            BeanUtils.copyProperties(comment, commentEntity);
+            commentEntity.setPost(postEntity);
+            UserEntity userEntity = userEntityRepository.findByUserId(comment.getUserId());
+            if (userEntity == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
+            } else if (userEntity.getClient().getClientId().compareTo(comment.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
+            }
+            commentEntity.setUser(userEntity);
+            ClientEntity clientEntity = clientEntityRepository.findByClientId(comment.getClientId());
+            commentEntity.setClient(clientEntity);
+            commentEntity = commentEntityRepository.save(commentEntity);
+            comment.setCommentId(commentEntity.getCommentId());
+            comment.setCommentCreatedTime(commentEntity.getCommentCreatedTime());
+            comment.setCommentUpdatedTime(commentEntity.getCommentUpdatedTime());
+            comment.setPostId(postEntity.getPostId());
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post ID not found");
         }
 
         return comment;
     }
 
     @Override
-    public Comment getCommentById(UUID commentId) throws ResponseStatusException {
+    public Comment getCommentById(UUID commentId, Comment comment) throws ResponseStatusException {
         // need_TODO: add client authentication.
         // need_TODO: add invalid client ID exception after client authentication is added.
-        try{
-            CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
-            Comment comment = new Comment();
-            BeanUtils.copyProperties(commentEntity, comment);
-            comment.setUserId(commentEntity.getUser().getUserId());
-            comment.setClientId(commentEntity.getClient().getClientId());
-            comment.setPostId(commentEntity.getPost().getPostId());
-            return comment;
-        }
-        catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "comment ID not found", e);
-            //throw new Exception("Could not find postId: " + e);
-
+        CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
+        if (commentEntity != null) {
+            if (commentEntity.getClient().getClientId().compareTo(comment.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
+            }
+            Comment responseComment = new Comment();
+            BeanUtils.copyProperties(commentEntity, responseComment);
+            responseComment.setUserId(commentEntity.getUser().getUserId());
+            responseComment.setClientId(commentEntity.getClient().getClientId());
+            responseComment.setPostId(commentEntity.getPost().getPostId());
+            return responseComment;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment ID not found");
         }
     }
 
     @Override
     public Comment updateCommentById(UUID commentId, Comment comment) throws ResponseStatusException {
-        // need_TODO: revise exception after client
-        if (comment.getClientId() != null && clientEntityRepository.existsByClientId(comment.getClientId())) {
-            try {
-                CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
-                commentEntity.setContent(comment.getContent());
-                commentEntity = commentEntityRepository.save(commentEntity);
-                BeanUtils.copyProperties(commentEntity, comment);
-                return comment;
+        CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
+        if (commentEntity != null) {
+            if (commentEntity.getClient().getClientId().compareTo(comment.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
             }
-            catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "comment ID not found", e);
-            }
+            commentEntity.setContent(comment.getContent());
+            commentEntity = commentEntityRepository.save(commentEntity);
+            BeanUtils.copyProperties(commentEntity, comment);
+            comment.setPostId(commentEntity.getPost().getPostId());
+            return comment;
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "invalid client ID");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment ID not found");
         }
-
     }
 
     @Override
     public Boolean deleteCommentById(UUID commentId, Comment comment) throws ResponseStatusException{
-        if (comment.getClientId() != null && clientEntityRepository.existsByClientId(comment.getClientId())) {
-            Boolean is_deleted = (commentEntityRepository.deleteCommentEntityByCommentId(commentId) == 1);
-            if (!is_deleted){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "comment ID not found");
+        CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
+        if (commentEntity != null) {
+            if (commentEntity.getClient().getClientId().compareTo(comment.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
             }
-            else {
-                return is_deleted;
-            }
+            Boolean is_deleted = (postEntityRepository.deletePostEntityByPostId(commentId) == 1);
+            return is_deleted;
         } else {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment ID not found");
         }
     }
 

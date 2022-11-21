@@ -26,8 +26,8 @@ public class CommentController {
 
     //get
     @GetMapping("/comment/{commentId}")
-    public Comment getCommentByCommentId(@PathVariable UUID commentId) throws Exception {
-        return commentService.getCommentById(commentId);
+    public Comment getCommentByCommentId(@PathVariable UUID commentId, @RequestBody Comment comment) throws Exception {
+        return commentService.getCommentById(commentId, comment);
     }
 
     @PutMapping("/comment/{commentId}")
