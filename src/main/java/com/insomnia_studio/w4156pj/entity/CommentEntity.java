@@ -2,10 +2,7 @@ package com.insomnia_studio.w4156pj.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
@@ -33,14 +30,17 @@ public class CommentEntity implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId")
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="clientId")
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     private ClientEntity client;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="postId")
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     private PostEntity post;
 
     @ManyToOne(fetch = FetchType.LAZY)

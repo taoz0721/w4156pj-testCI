@@ -81,6 +81,9 @@ public class UserServiceImpl implements UserService {
             if (userEntity.getClient().getClientId().compareTo(user.getClientId()) != 0) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
             }
+            if (userEntity.getPosts().size() > 0 || userEntity.getComments().size() > 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The user has post or comment, can't be deleted.");
+            }
             Boolean is_deleted = (userEntityRepository.deleteUserEntityByUserId(userId) == 1);
             return is_deleted;
         } else {
