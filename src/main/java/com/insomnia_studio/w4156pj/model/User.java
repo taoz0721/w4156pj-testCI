@@ -29,8 +29,8 @@ public class User {
     private Date userCreatedTime;
 
 
-    public User(UUID userId, String firstName, String lastName) {
-        this.userId = userId;
+    public User(UUID clientId, String firstName, String lastName) {
+        this.clientId = clientId;
         this.firstName = firstName;
         this.lastName = lastName;
     }

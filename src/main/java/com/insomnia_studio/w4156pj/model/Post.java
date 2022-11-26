@@ -46,4 +46,11 @@ public class Post {
         this.title = title;
         this.content = content;
     }
+
+    public Post(UUID clientId, UUID userId, String title, String content) {
+        this.clientId = clientId;
+        this.userId = userId;
+        this.title = title;
+        this.content = content;
+    }
 }
