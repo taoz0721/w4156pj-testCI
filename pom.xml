@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.insomnia_studio</groupId>
-	<artifactId>w4156nosecurity</artifactId>
+	<artifactId>w4156</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>w4156nosecurity</name>
+	<name>w4156</name>
 	<description>w4156nosecurity</description>
 	<properties>
 		<java.version>19</java.version>

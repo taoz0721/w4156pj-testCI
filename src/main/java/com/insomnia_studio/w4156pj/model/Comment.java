@@ -36,12 +36,13 @@ public class Comment {
 
     private Date commentUpdatedTime;
 
-    public Comment(UUID userId, UUID postId, Integer likesNum, Integer dislikesNum, String content) {
+    public Comment(UUID clientId, UUID userId, UUID postId, Integer likesNum, Integer dislikesNum, String content) {
+        this.clientId = clientId;
         this.userId = userId;
         this.postId = postId;
-        LikesNum = likesNum;
+        this.LikesNum = likesNum;
         this.dislikesNum = dislikesNum;
-        content = content;
+        this.content = content;
     }
 
 }

@@ -110,7 +110,7 @@ public class CommentServiceImpl implements CommentService{
             if (commentEntity.getClient().getClientId().compareTo(comment.getClientId()) != 0) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
             }
-            Boolean is_deleted = (postEntityRepository.deletePostEntityByPostId(commentId) == 1);
+            Boolean is_deleted = (commentEntityRepository.deleteCommentEntityByCommentId(commentId) == 1);
             return is_deleted;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment ID not found");

@@ -34,4 +34,7 @@ public class User {
         this.firstName = firstName;
         this.lastName = lastName;
     }
+    public User(UUID clientId) {
+        this.clientId = clientId;
+    }
 }
