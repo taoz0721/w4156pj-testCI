@@ -63,6 +63,7 @@ class W4156ApplicationTests {
 //	UUID testPostId = UUID.fromString("440fa679-93fa-4c27-aa7f-b76c02988c65");
 	static UUID testPostId;
 	static UUID testCommentId;
+	static UUID fakeCommentId = UUID.fromString("26878fd1-ad62-46ec-98cf-0b339c35d2ca");
 
 	@Test
 	@Order(1)
@@ -298,6 +299,107 @@ class W4156ApplicationTests {
 
 		testCommentId = UUID.fromString(JsonPath.read(result.getResponse().getContentAsString(), "$.commentId"));
 	}
+
+	@Test
+	@Order(15)
+	void testGetCommentValidClientValidUser() throws Exception {
+		Comment comment = new Comment(testClientId, testUserId, testPostId, 10, 2, "testComment");
+
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+						.get("/api/v1/comment/".concat(testCommentId.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.postId").value(testPostId.toString()))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(testUserId.toString()))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.likesNum").value(10))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.dislikesNum").value(2))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.content").value("testComment"))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andReturn();
+	}
+
+	@Test
+	@Order(16)
+	void testGetCommentInValidClientValidUser() throws Exception {
+		Comment comment = new Comment(fakeClientId, testUserId, testPostId, 10, 2, "testComment");
+
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+						.get("/api/v1/comment/".concat(testCommentId.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isForbidden())
+				.andReturn();
+	}
+
+	@Test
+	@Order(17)
+	void testGetCommentInvalidClientInvalidComment() throws Exception {
+		Comment comment = new Comment(testClientId, testUserId, testPostId, 10, 2, "testComment");
+
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+						.get("/api/v1/comment/".concat(fakeCommentId.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isNotFound())
+				.andReturn();
+	}
+
+	@Test
+	@Order(18)
+	void testUpdateCommentValidClientValidComment() throws Exception {
+		Comment comment = new Comment(testClientId, testUserId, testPostId, 10, 2, "testComment2");
+
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+						.put("/api/v1/comment/".concat(testCommentId.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.postId").value(testPostId.toString()))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.userId").value(testUserId.toString()))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.likesNum").value(10))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.dislikesNum").value(2))
+				.andExpect(MockMvcResultMatchers.jsonPath("$.content").value("testComment2"))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andReturn();
+	}
+
+	@Test
+	@Order(19)
+	void testUpdateCommentInvalidClientValidComment() throws Exception {
+		Comment comment = new Comment(fakeClientId, testUserId, testPostId, 10, 2, "testComment2");
+
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+						.put("/api/v1/comment/".concat(testCommentId.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isForbidden())
+				.andReturn();
+	}
+
+	@Test
+	@Order(20)
+	void testUpdateCommentValidClientInvalidComment() throws Exception {
+		Comment comment = new Comment(testClientId, testUserId, testPostId, 10, 2, "testComment2");
+
+		MvcResult result = mockMvc.perform(MockMvcRequestBuilders
+						.put("/api/v1/comment/".concat(fakeCommentId.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isNotFound())
+				.andReturn();
+	}
+
+
+
+
+
+
+
 
 
 
