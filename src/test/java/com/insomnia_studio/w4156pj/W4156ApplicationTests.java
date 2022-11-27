@@ -1,6 +1,7 @@
 package com.insomnia_studio.w4156pj;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.insomnia_studio.w4156pj.controller.CommentController;
 import com.insomnia_studio.w4156pj.controller.PostController;
 import com.insomnia_studio.w4156pj.model.Client;
 import com.insomnia_studio.w4156pj.model.Comment;
@@ -48,6 +49,9 @@ class W4156ApplicationTests {
 
 	@Autowired
 	private PostController postController;
+
+	@Autowired
+	private CommentController commentController;
 
 	@Autowired
 	private ClientService clientService;
@@ -393,6 +397,54 @@ class W4156ApplicationTests {
 				.andExpect(MockMvcResultMatchers.status().isNotFound())
 				.andReturn();
 	}
+
+	@Test
+	@Order(21)
+	void testDeleteCommentValidClientValidComment() throws Exception {
+		Comment comment = new Comment(testClientId, testUserId, testPostId, 10, 2, "testComment3");
+
+		UUID commentIdDelete = commentController.addComment(comment, testPostId).getCommentId();
+
+		// Delete the comment
+		mockMvc.perform(MockMvcRequestBuilders
+						.delete("/api/v1/comment/".concat(commentIdDelete.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isOk());
+	}
+
+	@Test
+	@Order(22)
+	void testDeleteCommentInvalidClientValidComment() throws Exception {
+		Comment comment = new Comment(fakeClientId, testUserId, testPostId, 10, 2, "testComment4");
+
+		// Delete the comment
+		mockMvc.perform(MockMvcRequestBuilders
+						.delete("/api/v1/comment/".concat(testCommentId.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isForbidden());
+	}
+
+	@Test
+	@Order(23)
+	void testDeleteCommentValidClientInvalidComment() throws Exception {
+		Comment comment = new Comment(fakeClientId, testUserId, testPostId, 10, 2, "testComment5");
+
+		// Delete the comment
+		mockMvc.perform(MockMvcRequestBuilders
+						.delete("/api/v1/comment/".concat(fakeCommentId.toString()))
+						.content(new ObjectMapper().writeValueAsString(comment))
+						.contentType(MediaType.APPLICATION_JSON)
+						.accept(MediaType.APPLICATION_JSON))
+				.andExpect(MockMvcResultMatchers.status().isNotFound());
+	}
+
+
+
+
 
 
 
