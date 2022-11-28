@@ -13,4 +13,8 @@ public interface CommentService {
     Comment updateCommentById(UUID commentId, Comment comment) throws Exception;
 
     Boolean deleteCommentById(UUID commentId, Comment comment) throws Exception;
+
+    Comment addLikeById(UUID commentId, Comment comment);
+
+    Comment addDislikeById(UUID commentId, Comment comment);
 }

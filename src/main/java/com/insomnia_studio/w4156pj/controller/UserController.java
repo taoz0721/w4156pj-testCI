@@ -38,14 +38,14 @@ public class UserController {
         return response;
     }
 
-    @PutMapping("/{userId}/addFollower/{followerId}")
-    public List<User> addFollower(@PathVariable UUID userId, @PathVariable UUID followerId) throws Exception{
-        return userService.addFollower(userId, followerId);
-    }
-
-    @PutMapping("/{userId}/deleteFollower/{followerId}")
-    public List<User> deleteFollower(@PathVariable UUID userId, @PathVariable UUID followerId) throws Exception{
-        return userService.deleteFollower(userId, followerId);
-    }
+//    @PutMapping("/{userId}/addFollower/{followerId}")
+//    public List<User> addFollower(@PathVariable UUID userId, @PathVariable UUID followerId) throws Exception{
+//        return userService.addFollower(userId, followerId);
+//    }
+//
+//    @PutMapping("/{userId}/deleteFollower/{followerId}")
+//    public List<User> deleteFollower(@PathVariable UUID userId, @PathVariable UUID followerId) throws Exception{
+//        return userService.deleteFollower(userId, followerId);
+//    }
 
 }

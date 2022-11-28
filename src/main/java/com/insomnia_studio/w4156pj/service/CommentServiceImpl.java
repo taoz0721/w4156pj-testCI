@@ -5,7 +5,6 @@ import com.insomnia_studio.w4156pj.entity.CommentEntity;
 import com.insomnia_studio.w4156pj.entity.PostEntity;
 import com.insomnia_studio.w4156pj.entity.UserEntity;
 import com.insomnia_studio.w4156pj.model.Comment;
-import com.insomnia_studio.w4156pj.model.Post;
 import com.insomnia_studio.w4156pj.repository.ClientEntityRepository;
 import com.insomnia_studio.w4156pj.repository.CommentEntityRepository;
 import com.insomnia_studio.w4156pj.repository.PostEntityRepository;
@@ -54,10 +53,10 @@ public class CommentServiceImpl implements CommentService{
             commentEntity.setUser(userEntity);
             ClientEntity clientEntity = clientEntityRepository.findByClientId(comment.getClientId());
             commentEntity.setClient(clientEntity);
+            if (comment.getLikesNum() == null) commentEntity.setLikesNum(0);
+            if (comment.getDislikesNum() == null) commentEntity.setDislikesNum(0);
             commentEntity = commentEntityRepository.save(commentEntity);
-            comment.setCommentId(commentEntity.getCommentId());
-            comment.setCommentCreatedTime(commentEntity.getCommentCreatedTime());
-            comment.setCommentUpdatedTime(commentEntity.getCommentUpdatedTime());
+            BeanUtils.copyProperties(commentEntity, comment);
             comment.setPostId(postEntity.getPostId());
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Post ID not found");
@@ -112,6 +111,40 @@ public class CommentServiceImpl implements CommentService{
             }
             Boolean is_deleted = (commentEntityRepository.deleteCommentEntityByCommentId(commentId) == 1);
             return is_deleted;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment ID not found");
+        }
+    }
+
+    @Override
+    public Comment addLikeById(UUID commentId, Comment comment) {
+        CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
+        if (commentEntity != null) {
+            if (commentEntity.getClient().getClientId().compareTo(comment.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
+            }
+            commentEntity.setLikesNum(commentEntity.getLikesNum()+1);
+            commentEntity = commentEntityRepository.save(commentEntity);
+            BeanUtils.copyProperties(commentEntity, comment);
+            comment.setPostId(commentEntity.getPost().getPostId());
+            return comment;
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment ID not found");
+        }
+    }
+
+    @Override
+    public Comment addDislikeById(UUID commentId, Comment comment) {
+        CommentEntity commentEntity = commentEntityRepository.findByCommentId(commentId);
+        if (commentEntity != null) {
+            if (commentEntity.getClient().getClientId().compareTo(comment.getClientId()) != 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
+            }
+            commentEntity.setDislikesNum(commentEntity.getDislikesNum()+1);
+            commentEntity = commentEntityRepository.save(commentEntity);
+            BeanUtils.copyProperties(commentEntity, comment);
+            comment.setPostId(commentEntity.getPost().getPostId());
+            return comment;
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Comment ID not found");
         }

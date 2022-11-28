@@ -91,60 +91,60 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Override
-    public List<User> addFollower(UUID userId, UUID followerId) throws Exception{
-        return changeFollower(userId, followerId, "add");
-    }
-
-    @Override
-    public List<User> deleteFollower(UUID userId, UUID followerId) throws Exception{
-        return changeFollower(userId, followerId, "remove");
-    }
-
-    private List<User> changeFollower(UUID userId, UUID followerId, String operation) throws ResponseStatusException {
-        UserEntity userEntity = userEntityRepository.findByUserId(userId);
-        if (operation == "add") {
-            try {
-                userEntity.addFollower(followerId);
-            }
-            catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
-            }
-        } else{
-            try {
-                userEntity.removeFollower(followerId);
-            }
-            catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
-            }
-        }
-        userEntity = userEntityRepository.save(userEntity);
-        User user1 = new User();
-        BeanUtils.copyProperties(userEntity, user1);
-
-        userEntity = userEntityRepository.findByUserId(followerId);
-        if (operation == "add") {
-            try {
-                userEntity.addFollowedBy(userId);
-            }
-            catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
-            }
-        } else {
-            try {
-                userEntity.removeFollowBy(userId);
-            }
-            catch (Exception e){
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
-            }
-        }
-        userEntity = userEntityRepository.save(userEntity);
-        User user2 = new User();
-        BeanUtils.copyProperties(userEntity, user2);
-
-        List<User> response =new ArrayList<User>();
-        response.add(user1);
-        response.add(user2);
-        return response;
-    }
+//    @Override
+//    public List<User> addFollower(UUID userId, UUID followerId) throws Exception{
+//        return changeFollower(userId, followerId, "add");
+//    }
+//
+//    @Override
+//    public List<User> deleteFollower(UUID userId, UUID followerId) throws Exception{
+//        return changeFollower(userId, followerId, "remove");
+//    }
+//
+//    private List<User> changeFollower(UUID userId, UUID followerId, String operation) throws ResponseStatusException {
+//        UserEntity userEntity = userEntityRepository.findByUserId(userId);
+//        if (operation == "add") {
+//            try {
+//                userEntity.addFollower(followerId);
+//            }
+//            catch (Exception e){
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
+//            }
+//        } else{
+//            try {
+//                userEntity.removeFollower(followerId);
+//            }
+//            catch (Exception e){
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
+//            }
+//        }
+//        userEntity = userEntityRepository.save(userEntity);
+//        User user1 = new User();
+//        BeanUtils.copyProperties(userEntity, user1);
+//
+//        userEntity = userEntityRepository.findByUserId(followerId);
+//        if (operation == "add") {
+//            try {
+//                userEntity.addFollowedBy(userId);
+//            }
+//            catch (Exception e){
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
+//            }
+//        } else {
+//            try {
+//                userEntity.removeFollowBy(userId);
+//            }
+//            catch (Exception e){
+//                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User ID not found");
+//            }
+//        }
+//        userEntity = userEntityRepository.save(userEntity);
+//        User user2 = new User();
+//        BeanUtils.copyProperties(userEntity, user2);
+//
+//        List<User> response =new ArrayList<User>();
+//        response.add(user1);
+//        response.add(user2);
+//        return response;
+//    }
 }

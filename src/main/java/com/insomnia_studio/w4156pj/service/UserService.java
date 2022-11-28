@@ -14,7 +14,7 @@ public interface UserService {
 
     Boolean deleteUserById(UUID userId, User user) throws Exception;
 
-    List<User> addFollower(UUID userId, UUID followerId) throws Exception;
-
-    List<User> deleteFollower(UUID userId, UUID followerId) throws Exception;
+//    List<User> addFollower(UUID userId, UUID followerId) throws Exception;
+//
+//    List<User> deleteFollower(UUID userId, UUID followerId) throws Exception;
 }
