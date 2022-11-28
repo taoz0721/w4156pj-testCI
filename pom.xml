@@ -12,9 +12,11 @@
 	<artifactId>w4156</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>w4156</name>
-	<description>w4156nosecurity</description>
+	<description>w4156pj</description>
 	<properties>
 		<java.version>19</java.version>
+		<sonar.organization>w4156pj</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
