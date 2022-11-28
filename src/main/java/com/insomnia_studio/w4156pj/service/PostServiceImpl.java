@@ -92,6 +92,9 @@ public class PostServiceImpl implements PostService {
             if (postEntity.getClient().getClientId().compareTo(post.getClientId()) != 0) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Invalid Client ID");
             }
+            if (postEntity.getComments().size() > 0) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN, "The post has comments, can't be deleted.");
+            }
             Boolean is_deleted = (postEntityRepository.deletePostEntityByPostId(postId) == 1);
             return is_deleted;
         } else {
